@@ -423,17 +423,35 @@ app.post("/create-test-user", async (req, res) => {
     res.json({
       success: true,
       message: "Test user created successfully",
-      credentials: {
-        username: testUsername,
-        password: testPassword
-      }
+      credentials: { username: testUsername, password: testPassword }
     });
   } catch (err) {
     console.error("Create test user error:", err);
-    res.status(500).json({
-      success: false,
-      error: err.message
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ─── FORCE ADMIN CREATION (for emergency login fix) ────────────────────────────
+app.get("/force-admin", async (req, res) => {
+  try {
+    const adminUser = "admin";
+    const adminPass = "admin123";
+    const hashed = await bcrypt.hash(adminPass, 10);
+
+    // Update if exists, or insert if not
+    await pool.query(
+      "INSERT INTO users (username, full_name, password_hash, role, status, mobile, balance) " +
+      "VALUES (?, ?, ?, 'ADMIN', 'ACTIVE', '0000000000', '100000.00') " +
+      "ON DUPLICATE KEY UPDATE password_hash = ?, status = 'ACTIVE', role = 'ADMIN'",
+      [adminUser, "Super Admin", hashed, hashed]
+    );
+
+    res.json({
+      success: true,
+      message: "Admin user has been forced to: admin / admin123"
     });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
