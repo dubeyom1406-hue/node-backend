@@ -113,7 +113,12 @@ const LoanApprovals = () => {
                         <button
                             key={s}
                             onClick={() => setFilterStatus(s)}
-                            className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${filterStatus === s ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' : 'bg-slate-50 text-slate-400 hover:bg-slate-100'}`}
+                            className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border
+                                ${filterStatus === s
+                                    ? (s === 'ALL' ? 'bg-emerald-500 border-emerald-500 text-white shadow-md shadow-emerald-500/20' :
+                                       s === 'APPROVED' ? 'bg-amber-400 border-amber-400 text-black shadow-md shadow-amber-400/20' :
+                                       'bg-red-500 border-red-500 text-white shadow-md shadow-red-500/20')
+                                    : 'bg-slate-50 text-slate-400 hover:bg-slate-100 border-transparent'}`}
                         >
                             {s}
                         </button>

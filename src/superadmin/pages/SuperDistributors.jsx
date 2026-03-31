@@ -164,7 +164,9 @@ const SuperDistributors = () => {
                             onClick={() => setStatusFilter(status)}
                             className={`px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all border
                                 ${statusFilter === status
-                                    ? 'bg-amber-500 border-amber-500 text-white shadow-md shadow-amber-500/20'
+                                    ? (status === 'All' ? 'bg-emerald-500 border-emerald-500 text-white shadow-md shadow-emerald-500/20' :
+                                       status === 'Approved' ? 'bg-amber-400 border-amber-400 text-black shadow-md shadow-amber-400/20' :
+                                       'bg-red-500 border-red-500 text-white shadow-md shadow-red-500/20')
                                     : 'bg-white border-slate-200 text-slate-500 hover:border-slate-300'}`}
                         >
                             {status}
