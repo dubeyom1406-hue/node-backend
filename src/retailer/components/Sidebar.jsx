@@ -237,7 +237,8 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
 
             <div className="flex-1 overflow-y-auto py-2 scrollbar-none">
                 {/* Main section */}
-                <div className="mb-6">
+                {/* Main Navigation List */}
+                <div className="flex flex-col px-1">
                     <MenuItem
                         item={{ id: 'dashboard', label: 'Dashboard', icon: LayoutGrid }}
                         isActive={activeTab === 'dashboard'}
@@ -248,9 +249,7 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                         isActive={activeTab === 'all_services'}
                         onClick={() => setActiveTab('all_services')}
                     />
-                </div>
-
-                <div className="mb-6">
+                    
                     {serviceItems.map((item) => (
                         <MenuItem
                             key={item.id}
@@ -259,9 +258,7 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                             onClick={() => setActiveTab(item.id)}
                         />
                     ))}
-                </div>
 
-                <div className="mb-6">
                     {businessItems.map((item) => (
                         <MenuItem
                             key={item.id}
@@ -270,10 +267,7 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                             onClick={item.onClick}
                         />
                     ))}
-                </div>
-                
-                {/* Support section */}
-                <div className="mb-6">
+
                     {ekycItems.map((item) => (
                         <MenuItem
                             key={item.id}
