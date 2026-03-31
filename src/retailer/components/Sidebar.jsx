@@ -109,8 +109,8 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                             onClick();
                         }
                     }}
-                    className={`flex items-center ${isHovered ? 'justify-between' : 'justify-center'} px-3 py-2.5 my-1.5 cursor-pointer group transition-all duration-300 rounded-xl relative
-                    ${isActive ? 'text-white' : 'text-white/60 hover:text-white'}`}
+                    className={`flex items-center ${isHovered ? 'justify-between' : 'justify-center'} px-3 py-2.5 my-1.5 cursor-pointer group transition-all duration-300 rounded-xl relative`}
+                    style={{ color: isActive ? 'var(--on-primary-color)' : 'var(--on-primary-color-60)' }}
                 >
                     {/* Floating Background */}
                     {isActive && (
@@ -122,14 +122,15 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                     )}
 
                     <div className="flex items-center space-x-3 relative z-10 w-full">
-                        <div className={`transition-all duration-300 ${isActive ? 'scale-110' : 'text-white/60 group-hover:text-white'}`} style={{ color: isActive ? '#fff' : undefined }}>
+                        <div className={`transition-all duration-300 ${isActive ? 'scale-110' : ''}`} style={{ color: isActive ? 'var(--on-primary-color)' : 'var(--on-primary-color-60)' }}>
                             <item.icon size={20} strokeWidth={isActive ? 2.5 : 2} />
                         </div>
                         {isHovered && (
                             <motion.span
                                 initial={{ opacity: 0, x: -5 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                className={`font-bold text-[13.5px] tracking-tight ${isActive ? 'text-white' : 'text-white/70'}`}
+                                className="font-bold text-[13.5px] tracking-tight"
+                                style={{ color: isActive ? 'var(--on-primary-color)' : 'var(--on-primary-color-60)' }}
                             >
                                 {item.label}
                             </motion.span>
@@ -139,7 +140,7 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                         <div className="relative z-10">
                             {item.hasSubmenu ? (
                                 <div className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`}>
-                                    <ChevronDown size={14} className={`${isActive ? 'text-white' : 'text-white/40'}`} />
+                                    <ChevronDown size={14} style={{ color: isActive ? 'var(--on-primary-color)' : 'var(--on-primary-color-40)' }} />
                                 </div>
                             ) : isActive && !item.hasSubmenu && (
                                 <motion.div 
@@ -179,8 +180,11 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                                                 setActiveTab(sub.id);
                                             }
                                         }}
-                                        className={`pl-4 py-2 text-[12.5px] font-bold cursor-pointer transition-all rounded-lg my-1 relative
-                                        ${isSubActive ? 'text-blue-600' : 'text-slate-400 hover:text-slate-700 hover:bg-slate-50/50'}`}
+                                        className="block px-4 py-2 text-[11px] font-black uppercase tracking-widest transition-all rounded-lg"
+                                        style={{ 
+                                            color: isSubActive ? 'var(--on-primary-color)' : 'var(--on-primary-color-40)',
+                                            backgroundColor: isSubActive ? 'var(--on-primary-color-20)' : undefined
+                                        }}
                                     >
                                         {isSubActive && (
                                             <motion.div 
@@ -249,7 +253,7 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                 {/* Section: TRADING -> SERVICES */}
                 {isHovered && (
                     <div className="px-6 py-3">
-                        <span className="text-[11px] font-black text-white/40 uppercase tracking-widest">Services</span>
+                        <span className="text-[11px] font-black uppercase tracking-widest" style={{ color: 'var(--on-primary-color-40)' }}>Services</span>
                     </div>
                 )}
                 <div className="mb-6">
@@ -266,7 +270,7 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                 {/* Section: PREFERENCE -> BUSINESS */}
                 {isHovered && (
                     <div className="px-6 py-3">
-                        <span className="text-[11px] font-black text-white/40 uppercase tracking-widest">Business Hub</span>
+                        <span className="text-[11px] font-black uppercase tracking-widest" style={{ color: 'var(--on-primary-color-40)' }}>Business Hub</span>
                     </div>
                 )}
                 <div className="mb-6">

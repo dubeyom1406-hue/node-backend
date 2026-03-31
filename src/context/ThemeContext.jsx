@@ -29,6 +29,21 @@ export const ThemeProvider = ({ children }) => {
             return `rgba(${r}, ${g}, ${b}, ${alpha})`;
         };
 
+        const getContrastColor = (hex) => {
+            if (hex.indexOf('#') === 0) hex = hex.slice(1);
+            if (hex.length === 3) hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+            const r = parseInt(hex.slice(0, 2), 16);
+            const g = parseInt(hex.slice(2, 4), 16);
+            const b = parseInt(hex.slice(4, 6), 16);
+            const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+            return (yiq >= 128) ? '#000000' : '#FFFFFF';
+        };
+
+        const onPrimary = getContrastColor(primaryColor);
+        document.documentElement.style.setProperty('--on-primary-color', onPrimary);
+        document.documentElement.style.setProperty('--on-primary-color-60', onPrimary === '#FFFFFF' ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)');
+        document.documentElement.style.setProperty('--on-primary-color-40', onPrimary === '#FFFFFF' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)');
+        
         document.documentElement.style.setProperty('--primary-color-dark', hexToRgba(primaryColor, 0.9));
         document.documentElement.style.setProperty('--primary-color-80', hexToRgba(primaryColor, 0.8));
         document.documentElement.style.setProperty('--primary-color-light', hexToRgba(primaryColor, 0.15));
