@@ -128,7 +128,7 @@ const DistributorSidebar = ({ showMobile, onClose }) => {
                                 `flex items-center gap-3 px-3 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all duration-200
                                 ${isActive
                                     ? 'bg-gradient-to-r from-blue-500 to-blue-400 text-white shadow-lg shadow-blue-500/30'
-                                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                                    : 'text-black hover:bg-white/10'
                                 } ${isHovered ? 'justify-start' : 'justify-center'}`
                             }
                         >
@@ -184,7 +184,7 @@ const DistributorSidebar = ({ showMobile, onClose }) => {
                                             `flex items-center gap-3 px-3 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all duration-200
                                             ${isActive
                                                 ? 'bg-gradient-to-r from-amber-500 to-amber-400 text-white shadow-lg shadow-amber-500/30'
-                                                : 'text-slate-400 hover:text-white hover:bg-white/5'
+                                                : 'text-black hover:bg-white/10'
                                             } ${isHovered ? 'justify-start' : 'justify-center'}`
                                         }
                                     >
@@ -238,7 +238,7 @@ const DistributorSidebar = ({ showMobile, onClose }) => {
                     {isHovered && (
                         <div className="bg-black/5 rounded-xl p-3 space-y-2">
                             <div className="flex items-center justify-between">
-                                <p className="text-[8px] font-black text-black/60 uppercase tracking-widest flex items-center gap-1">
+                                <p className="text-[8px] font-black text-black uppercase tracking-widest flex items-center gap-1">
                                     <Palette size={10} /> Theme Color
                                 </p>
                                 <input 
@@ -253,7 +253,7 @@ const DistributorSidebar = ({ showMobile, onClose }) => {
                     
                     <button
                         onClick={() => navigate('/dashboard')}
-                        className={`w-full flex items-center gap-2 text-slate-400 hover:text-amber-400 text-[9px] font-black uppercase tracking-widest transition-colors py-2 px-2 rounded-lg hover:bg-white/5
+                        className={`w-full flex items-center gap-2 text-black hover:bg-black/5 text-[9px] font-black uppercase tracking-widest transition-colors py-2 px-2 rounded-lg
                             ${isHovered ? 'justify-start' : 'justify-center'}`}
                     >
                         <ArrowLeft size={14} className="shrink-0" />
@@ -273,12 +273,12 @@ const DistributorSidebar = ({ showMobile, onClose }) => {
                             animate={{ opacity: 1 }}
                             className="bg-black/5 rounded-xl p-3 space-y-1"
                         >
-                            <p className="text-[8px] font-black text-black/60 uppercase tracking-widest">Customer Support</p>
+                            <p className="text-[8px] font-black text-black uppercase tracking-widest">Customer Support</p>
                             <div className="flex items-center gap-2 text-black text-[9px] font-bold">
-                                <Phone size={10} /> 022-6908-4510
+                                <Phone size={10} /> 0621-4008548
                             </div>
                             <div className="flex items-center gap-2 text-black text-[9px] font-bold">
-                                <Smartphone size={10} /> 9223300024
+                                <Smartphone size={10} /> 7004128310
                             </div>
                         </motion.div>
                     )}
