@@ -87,16 +87,7 @@ const Header = ({ onAddMoney, onProfileClick, onMenuClick }) => {
                         <Menu size={20} />
                     </button>
                     
-                    <div className="flex items-center w-full max-w-[200px] lg:max-w-[260px]">
-                        <div className="relative w-full group">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" size={14} />
-                            <input 
-                                type="text"
-                                placeholder="Search Services..."
-                                className="w-full bg-slate-50 border border-slate-200 rounded-full py-2 pl-9 pr-3 text-xs text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500/30 focus:bg-white transition-all font-medium"
-                            />
-                        </div>
-                    </div>
+                    <div className="flex-1"></div>
                 </div>
 
                 {/* Right Section: Icons & Profile Pill */}

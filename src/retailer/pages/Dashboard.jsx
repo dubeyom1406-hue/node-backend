@@ -244,12 +244,8 @@ const RetailerDashboard = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 -mt-2"
                 >
-                    {/* LEFT GREETING */}
-                    <div className="space-y-0.5">
-                        <div className="flex items-center gap-3 mb-1">
-                            <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-                            <span className="text-[10px] font-black text-blue-600 uppercase tracking-[0.4em]">Personal Dashboard</span>
-                        </div>
+                        {/* LEFT GREETING */}
+                        <div className="space-y-0.5">
                         <h1 className="text-3xl md:text-4xl font-black tracking-tighter text-slate-900 leading-tight">
                             Hi {currentUser?.name?.split(' ')[0] || currentUser?.businessName?.split(' ')[0] || 'User'}, <span className="text-slate-400">Have a great day!</span>
                         </h1>
