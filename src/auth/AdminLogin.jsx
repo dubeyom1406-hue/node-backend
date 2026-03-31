@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Eye, EyeOff, RefreshCcw, ArrowRight, ShieldCheck,
-    Lock, User, Mail, KeyRound, CheckCircle2, AlertCircle, Loader2, ChevronLeft, Check
+    Lock, User, Mail, KeyRound, CheckCircle2, AlertCircle, Loader2, ChevronLeft, Check, Palette
 } from 'lucide-react';
 
 import logo from '../assets/rupiksha_logo.png';
@@ -59,6 +59,12 @@ const AdminLogin = () => {
     const empOtpRefs = useRef([]);
     const empTimerRef = useRef(null);
     const { login, setUser, setIsLocked } = useAuth();
+    const [brandColor, setBrandColor] = useState(localStorage.getItem('rupiksha_brand_color') || '#064e3b');
+
+    useEffect(() => {
+        document.documentElement.style.setProperty('--brand-color', brandColor);
+        localStorage.setItem('rupiksha_brand_color', brandColor);
+    }, [brandColor]);
 
     /* captcha */
     const genCaptcha = () => {
@@ -313,8 +319,22 @@ const AdminLogin = () => {
                 </div>
 
                 <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl">
+                        <div className="w-6 h-6 rounded-lg shadow-inner flex items-center justify-center overflow-hidden relative" style={{ backgroundColor: brandColor }}>
+                            <input
+                                type="color"
+                                value={brandColor}
+                                onChange={(e) => setBrandColor(e.target.value)}
+                                className="absolute inset-0 opacity-0 cursor-pointer w-10 h-10"
+                                title="Choose Theme Color"
+                            />
+                            <Palette size={12} className={parseInt(brandColor.replace('#',''), 16) > 0xffffff/2 ? 'text-black' : 'text-white'} />
+                        </div>
+                        <span className="text-[9px] font-black uppercase text-slate-400 tracking-widest hidden sm:inline">Theme Control</span>
+                    </div>
+
                     <div className="hidden md:flex flex-col items-end">
-                        <span className="bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full border border-emerald-100 shadow-sm">
+                        <span className="bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full border border-emerald-100 shadow-sm" style={{ color: brandColor, borderColor: brandColor + '20', backgroundColor: brandColor + '05' }}>
                             Headquarters Protocol
                         </span>
                     </div>
@@ -333,14 +353,14 @@ const AdminLogin = () => {
                 <div className="w-full md:w-[45%] lg:w-[42%] p-8 md:p-10 flex flex-col items-center justify-center bg-white border-r border-slate-50 shadow-2xl relative z-10 h-full overflow-y-auto">
                     <div className="w-full max-w-[420px] space-y-6">
                         <div className="text-center space-y-1">
-                            <h2 className="text-[#064e3b] text-3xl md:text-4xl font-black tracking-tighter uppercase italic">
-                                LOGIN
+                            <h2 className="text-3xl md:text-4xl font-black tracking-tighter italic" style={{ color: brandColor }}>
+                                Login
                             </h2>
                             <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Access System Headquarters</p>
                         </div>
 
                         <div className="bg-white rounded-[2.5rem] shadow-[0_30px_70px_rgba(0,0,0,0.1)] border border-slate-100 overflow-hidden">
-                            <div className="bg-emerald-600 text-white text-center py-4 font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2">
+                            <div className="text-white text-center py-4 font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2" style={{ backgroundColor: brandColor }}>
                                 <ShieldCheck size={16} /> Restricted Access — Authorized Personnel
                             </div>
 
@@ -349,7 +369,8 @@ const AdminLogin = () => {
                                 <div className="flex bg-slate-100 rounded-xl p-1 mb-5">
                                     {TABS.map((t, i) => (
                                         <button key={t} onClick={() => { setTab(i); setPwError(''); setOtpError(''); setOtpInfo(''); }}
-                                            className={`flex-1 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${tab === i ? 'bg-white text-emerald-700 shadow-sm border border-slate-200' : 'text-slate-500 hover:text-slate-700'}`}>
+                                            className={`flex-1 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${tab === i ? 'bg-white shadow-sm border border-slate-200' : 'text-slate-500 hover:text-slate-700'}`}
+                                            style={tab === i ? { color: brandColor } : {}}>
                                             {t}
                                         </button>
                                     ))}
@@ -529,7 +550,8 @@ const AdminLogin = () => {
                                                     </div>
 
                                                     <motion.button type="submit" disabled={verifyLoading || timer === 0} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
-                                                        className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black py-4 rounded-xl text-[11px] uppercase tracking-widest shadow-xl shadow-emerald-500/20 flex items-center justify-center gap-3 transition-all disabled:opacity-60">
+                                                        className="w-full text-white font-black py-4 rounded-xl text-[11px] uppercase tracking-widest shadow-xl flex items-center justify-center gap-3 transition-all disabled:opacity-60"
+                                                        style={{ backgroundColor: brandColor, boxShadow: `0 20px 40px ${brandColor}33` }}>
                                                         {verifyLoading ? <><Loader2 size={14} className="animate-spin" /> Verifying...</> : <><KeyRound size={14} /> Verify & Login <ArrowRight size={14} /></>}
                                                     </motion.button>
 
@@ -552,7 +574,7 @@ const AdminLogin = () => {
                 </div>
 
                 {/* Right: Splash */}
-                <div className="hidden md:flex flex-1 bg-gradient-to-br from-[#064e3b] to-[#115e59] relative overflow-hidden items-center justify-center p-8 h-full">
+                <div className="hidden md:flex flex-1 relative overflow-hidden items-center justify-center p-8 h-full" style={{ background: `linear-gradient(135deg, ${brandColor}, ${brandColor}dd)` }}>
                     <div className="absolute inset-0 overflow-hidden pointer-events-none">
                         <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400/10 blur-[150px] rounded-full -mr-48 -mt-48" />
                         <div className="absolute bottom-0 left-0 w-80 h-80 bg-teal-500/10 blur-[120px] rounded-full -ml-40 -mb-40" />
@@ -563,11 +585,11 @@ const AdminLogin = () => {
                         transition={{ duration: 0.6 }}
                         className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-12 text-white max-w-md text-center space-y-6 z-10"
                     >
-                        <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-3xl flex items-center justify-center mx-auto shadow-2xl shadow-emerald-500/30">
-                            <ShieldCheck size={40} className="text-white" />
+                        <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto shadow-2xl" style={{ backgroundColor: 'white', color: brandColor, boxShadow: `0 20px 40px rgba(0,0,0,0.2)` }}>
+                            <ShieldCheck size={40} />
                         </div>
                         <div className="space-y-2">
-                            <span className="text-[9px] font-black text-emerald-300 uppercase tracking-widest">Headquarters Protocol</span>
+                            <span className="text-[9px] font-black uppercase tracking-widest opacity-70">Headquarters Protocol</span>
                             <h3 className="text-3xl font-black tracking-tight">System<br />Administration</h3>
                             <p className="text-white/60 text-sm font-bold">Manage the entire platform layout, monitor live active employees, and maintain system integrity.</p>
                         </div>
@@ -577,8 +599,8 @@ const AdminLogin = () => {
                             'System Integrity & Security',
                             'Hierarchical Flow Management',
                         ].map((f, i) => (
-                            <div key={i} className="flex items-center gap-3 text-left bg-white/5 border border-white/10 rounded-xl px-4 py-3">
-                                <div className="w-5 h-5 bg-teal-400 rounded-full flex items-center justify-center shrink-0">
+                            <div key={i} className="flex items-center gap-3 text-left bg-white/10 border border-white/10 rounded-xl px-4 py-3">
+                                <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: brandColor }}>
                                     <Check size={11} className="text-white" />
                                 </div>
                                 <span className="text-sm font-bold text-white/80">{f}</span>
