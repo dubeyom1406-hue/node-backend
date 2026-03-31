@@ -259,9 +259,8 @@ const RetailerDashboard = () => {
                     <div className="relative">
                         <div className="hidden lg:flex items-center bg-white border border-slate-100 p-1.5 rounded-[28px] shadow-xl shadow-slate-200/50">
                             {[
-                                { id: 'main', label: 'Main', balance: balance, color: 'blue', icon: <Wallet size={12} />, actions: ['Add Funds', 'Usage', 'History'] },
                                 { id: 'aeps', label: 'AEPS', balance: (Number(balance) * 0.4).toFixed(2), color: 'emerald', icon: <Zap size={12} />, actions: ['Move to Main', 'AEPS Hub'] },
-                                { id: 'incentive', label: 'Incentive', balance: (Number(balance) * 0.05).toFixed(2), color: 'amber', icon: <TrendingUp size={12} />, actions: ['Settle to Main', 'Breakdown'] },
+                                { id: 'main', label: 'Main', balance: balance, color: 'blue', icon: <Wallet size={12} />, actions: ['Add Funds', 'Usage', 'History'] },
                             ].map((w, i) => (
                                 <div key={i} className="relative group/wallet">
                                     <div 
