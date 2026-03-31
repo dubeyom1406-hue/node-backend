@@ -12,6 +12,38 @@ Ab humein alag se koi config file banane ki zaroorat nahi hai (v4 ka naya featur
   font-weight: 700;
   color-scheme: light dark;
   background-color: #ffffff;
+  
+  /* Theme Variables Base */
+  --primary-color: #2563eb;
+  --primary-color-light: rgba(37, 99, 235, 0.15);
+  --primary-color-5: rgba(37, 99, 235, 0.05);
+  --primary-color-10: rgba(37, 99, 235, 0.1);
+  --primary-color-20: rgba(37, 99, 235, 0.2);
+}
+
+@theme {
+  --color-blue-50: var(--primary-color-5);
+  --color-blue-100: var(--primary-color-10);
+  --color-blue-200: var(--primary-color-20);
+  --color-blue-300: var(--primary-color); /* Approximation */
+  --color-blue-400: var(--primary-color);
+  --color-blue-500: var(--primary-color);
+  --color-blue-600: var(--primary-color);
+  --color-blue-700: var(--primary-color);
+  --color-blue-800: var(--primary-color);
+  --color-blue-900: var(--primary-color);
+
+  --color-indigo-50: var(--primary-color-5);
+  --color-indigo-100: var(--primary-color-10);
+  --color-indigo-500: var(--primary-color);
+  --color-indigo-600: var(--primary-color);
+  --color-indigo-700: var(--primary-color);
+
+  --color-emerald-50: var(--primary-color-5);
+  --color-emerald-100: var(--primary-color-10);
+  --color-emerald-500: var(--primary-color);
+  --color-emerald-600: var(--primary-color);
+  --color-emerald-700: var(--primary-color);
 }
 
 /* ── GLOBAL MOBILE FIXES ── */

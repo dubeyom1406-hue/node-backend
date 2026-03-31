@@ -262,7 +262,7 @@ const RetailerDashboard = () => {
                         animate={{ opacity: 1, x: 0 }}
                         className="bg-white border-y border-slate-100 py-3 flex items-center gap-4 px-10"
                     >
-                        <div className="bg-blue-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest whitespace-nowrap">
+                        <div className="text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest whitespace-nowrap" style={{ backgroundColor: 'var(--primary-color)' }}>
                             Bulletin
                         </div>
                         <div className="flex-1 overflow-hidden">
@@ -305,7 +305,8 @@ const RetailerDashboard = () => {
                             <div className="h-4 w-[1px] bg-slate-100 hidden sm:block" />
                             <button 
                                 onClick={() => setIsServicesExpanded(!isServicesExpanded)}
-                                className="text-[9px] font-black text-blue-600 uppercase tracking-widest hover:underline"
+                                className="text-[9px] font-black uppercase tracking-widest hover:underline"
+                                style={{ color: 'var(--primary-color)' }}
                             >
                                 {isServicesExpanded ? 'Collapse View' : 'Full Catalog'}
                             </button>
@@ -330,7 +331,7 @@ const RetailerDashboard = () => {
                             onClick={() => setIsServicesExpanded(!isServicesExpanded)}
                             className="group flex flex-col items-center gap-3 cursor-pointer"
                         >
-                            <div className="w-16 h-16 rounded-[24px] flex items-center justify-center shadow-xl bg-white border border-slate-100 text-slate-800 group-hover:bg-blue-600 group-hover:border-blue-600 group-hover:text-white transition-all duration-300">
+                            <div className="w-16 h-16 rounded-[24px] flex items-center justify-center shadow-xl bg-white border border-slate-100 text-slate-800 transition-all duration-300" style={{ backgroundColor: isServicesExpanded ? 'var(--primary-color)' : undefined, color: isServicesExpanded ? '#fff' : undefined }}>
                                 <motion.div animate={{ rotate: isServicesExpanded ? 180 : 0 }} className="grid grid-cols-3 gap-1">
                                     {[...Array(9)].map((_, i) => (
                                         <div key={i} className="w-1 h-1 rounded-full bg-current" />

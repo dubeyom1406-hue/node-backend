@@ -122,7 +122,7 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                     )}
 
                     <div className="flex items-center space-x-3 relative z-10 w-full">
-                        <div className={`transition-all duration-300 ${isActive ? 'text-blue-600 scale-110' : 'text-slate-400 group-hover:text-slate-900'}`}>
+                        <div className={`transition-all duration-300 ${isActive ? 'scale-110' : 'text-slate-400 group-hover:text-slate-900'}`} style={{ color: isActive ? 'var(--primary-color)' : undefined }}>
                             <item.icon size={20} strokeWidth={isActive ? 2.5 : 2} />
                         </div>
                         {isHovered && (

@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
+import ThemeSelector from './ThemeSelector';
 
 const Header = ({ onAddMoney, onProfileClick, onMenuClick }) => {
     const navigate = useNavigate();
@@ -104,11 +105,11 @@ const Header = ({ onAddMoney, onProfileClick, onMenuClick }) => {
                                     onClick={() => setActiveWallet(activeWallet === w.id ? null : w.id)}
                                     className={`flex items-center gap-3 px-4 py-1.5 cursor-pointer hover:bg-slate-50 transition-colors rounded-full ${i === 0 ? 'border-r border-slate-100' : ''}`}
                                 >
-                                    <div className={`w-7 h-7 flex items-center justify-center bg-${w.color}-50 rounded-full text-${w.color}-600 shadow-sm group-hover/wallet:scale-110 transition-transform`}>
+                                    <div className="w-7 h-7 flex items-center justify-center rounded-full shadow-sm group-hover/wallet:scale-110 transition-transform" style={{ backgroundColor: 'var(--primary-color-light)', color: 'var(--primary-color)' }}>
                                         {w.icon}
                                     </div>
                                     <div className="flex flex-col">
-                                        <span className="text-[7px] font-black uppercase tracking-widest text-slate-400 leading-none mb-1">{w.label}</span>
+                                        <span className="text-[7px] font-black uppercase tracking-widest leading-none mb-1 opacity-60" style={{ color: 'var(--primary-color)' }}>{w.label}</span>
                                         <span className="text-[11px] font-black tracking-tighter text-slate-800 leading-none">₹{Number(w.balance).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
                                     </div>
                                 </div>
@@ -146,6 +147,9 @@ const Header = ({ onAddMoney, onProfileClick, onMenuClick }) => {
                     {/* Notification & Profile Pill */}
                     <div className="flex items-center gap-4 relative">
                         
+                        {/* Theme Customizer */}
+                        <ThemeSelector />
+
                         {/* Notifications Dropdown */}
                         <div className="relative">
                             <div 

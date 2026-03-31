@@ -4,6 +4,7 @@ import './App.css';
 
 import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 // --- Loading Component ---
 const PageLoader = () => (
@@ -142,7 +143,8 @@ import LockScreen from './components/LockScreen';
 
 function App() {
   return (
-    <AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
       <LanguageProvider>
         <Router>
           <LockScreen />
@@ -296,6 +298,7 @@ function App() {
         </Router>
       </LanguageProvider>
     </AuthProvider>
+    </ThemeProvider>
   );
 }
 
