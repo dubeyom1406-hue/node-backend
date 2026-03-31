@@ -3,7 +3,7 @@ import {
     Fingerprint, Volume2, HelpCircle, Wallet, RefreshCw,
     Eye, Bell, MoreVertical, ChevronDown, Menu,
     User, CreditCard, FileText, Lock, Settings, Shield,
-    Search
+    Search, Zap
 } from 'lucide-react';
 import { dataService } from '../../services/dataService';
 import mainLogo from '../../assets/rupiksha_logo.png';
@@ -20,6 +20,8 @@ const Header = ({ onAddMoney, onProfileClick, onMenuClick }) => {
     const [showProfileMenu, setShowProfileMenu] = useState(false);
     const [showNotifications, setShowNotifications] = useState(false);
     const [notifications, setNotifications] = useState([]); // Empty by default
+    const [balance, setBalance] = useState("0.00");
+    const [activeWallet, setActiveWallet] = useState(null);
     const { lockTimeLeft, logoutTimeLeft } = useAuth();
     
     const unreadCount = notifications.filter(n => !n.read).length;
@@ -49,6 +51,11 @@ const Header = ({ onAddMoney, onProfileClick, onMenuClick }) => {
                 });
             }
             setNotifications(systemNotifs);
+
+            // Fetch live balance
+            if (data.currentUser) {
+                dataService.getWalletBalance(data.currentUser.id).then(bal => setBalance(bal));
+            }
         };
         updateData();
         window.addEventListener('dataUpdated', updateData);
@@ -94,6 +101,56 @@ const Header = ({ onAddMoney, onProfileClick, onMenuClick }) => {
 
                 {/* Right Section: Icons & Profile Pill */}
                 <div className="flex items-center space-x-6">
+
+                    {/* WALLET CLUSTER - INTEGRATED FROM DASHBOARD */}
+                    <div className="relative hidden lg:flex items-center bg-white border border-slate-200 p-1 rounded-full shadow-sm">
+                        {[
+                            { id: 'aeps', label: 'AEPS', balance: (Number(balance) * 0.4).toFixed(2), color: 'emerald', icon: <Zap size={10} />, actions: ['Move to Main', 'AEPS Hub'] },
+                            { id: 'main', label: 'Main', balance: balance, color: 'blue', icon: <Wallet size={10} />, actions: ['Add Funds', 'Usage', 'History'] },
+                        ].map((w, i) => (
+                            <div key={i} className="relative group/wallet flex items-center">
+                                <div 
+                                    onClick={() => setActiveWallet(activeWallet === w.id ? null : w.id)}
+                                    className={`flex items-center gap-3 px-4 py-1.5 cursor-pointer hover:bg-slate-50 transition-colors rounded-full ${i === 0 ? 'border-r border-slate-100' : ''}`}
+                                >
+                                    <div className={`w-7 h-7 flex items-center justify-center bg-${w.color}-50 rounded-full text-${w.color}-600 shadow-sm group-hover/wallet:scale-110 transition-transform`}>
+                                        {w.icon}
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-[7px] font-black uppercase tracking-widest text-slate-400 leading-none mb-1">{w.label}</span>
+                                        <span className="text-[11px] font-black tracking-tighter text-slate-800 leading-none">₹{Number(w.balance).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
+                                    </div>
+                                </div>
+
+                                <AnimatePresence>
+                                    {activeWallet === w.id && (
+                                        <motion.div 
+                                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                            className="absolute top-full right-0 mt-3 w-40 bg-white border border-slate-100 rounded-[20px] shadow-2xl p-1 z-[60] overflow-hidden"
+                                        >
+                                            {w.actions.map((act, idx) => (
+                                                <button 
+                                                    key={idx}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        if (act === 'Add Funds') navigate('/add-money');
+                                                        if (act === 'History' || act === 'Usage') navigate('/reports');
+                                                        if (act === 'AEPS Hub') navigate('/aeps');
+                                                        setActiveWallet(null);
+                                                    }}
+                                                    className="w-full text-left px-4 py-2 text-[9px] font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors uppercase tracking-tight"
+                                                >
+                                                    {act}
+                                                </button>
+                                            ))}
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+                        ))}
+                    </div>
 
                     {/* Notification & Profile Pill */}
                     <div className="flex items-center gap-4 relative">
