@@ -190,3 +190,17 @@ export const userService = {
       body: JSON.stringify({ userId }),
     }),
 };
+
+// ─── OTP SERVICE ──────────────────────────────────────────────────────────────
+export const otpService = {
+  sendMobileOtp: (mobile) =>
+    apiFetch("/auth/send-otp", {
+      method: "POST",
+      body: JSON.stringify({ mobile }),
+    }),
+  verifyOtp: (mobile, otp) =>
+    apiFetch("/auth/verify-otp", {
+      method: "POST",
+      body: JSON.stringify({ mobile, otp }),
+    }),
+};
