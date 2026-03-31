@@ -250,12 +250,6 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                     />
                 </div>
 
-                {/* Section: TRADING -> SERVICES */}
-                {isHovered && (
-                    <div className="px-6 py-3">
-                        <span className="text-[11px] font-black uppercase tracking-widest" style={{ color: 'var(--on-primary-color-40)' }}>Services</span>
-                    </div>
-                )}
                 <div className="mb-6">
                     {serviceItems.map((item) => (
                         <MenuItem
@@ -267,12 +261,6 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                     ))}
                 </div>
 
-                {/* Section: PREFERENCE -> BUSINESS */}
-                {isHovered && (
-                    <div className="px-6 py-3">
-                        <span className="text-[11px] font-black uppercase tracking-widest" style={{ color: 'var(--on-primary-color-40)' }}>Business Hub</span>
-                    </div>
-                )}
                 <div className="mb-6">
                     {businessItems.map((item) => (
                         <MenuItem
