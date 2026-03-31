@@ -11,7 +11,11 @@ import {
     Building2, Users, ArrowRight, Shield
 } from 'lucide-react';
 import logo from '../assets/rupiksha_logo.png';
+import characterShop from '../assets/character_shop_3d.png';
+import distributorChar from '../assets/distributor_character_3d.png';
+import superDistributorChar from '../assets/super_distributor_magnet_3d.png';
 import { dataService, BACKEND_URL } from '../services/dataService';
+import { otpService } from '../services/apiService';
 import DistributorLogin from '../distributor/components/DistributorLogin';
 import SuperAdminLogin from '../superadmin/components/SuperAdminLogin';
 import RetailerLogin from '../retailer/components/RetailerLogin';
@@ -158,7 +162,7 @@ const Login = () => {
     const [registerForm, setRegisterForm] = useState({ name: '', mobile: '', email: '', state: '', role: 'RETAILER', lang: lang === 'en' ? 'English' : 'Hindi', agreement: false });
     const [forgotForm, setForgotForm] = useState({ mobile: '', dob: '' });
 
-    // Update register form when global lang changes
+    // Update form when global lang changes
     useEffect(() => {
         setRegisterForm(prev => ({ ...prev, lang: lang === 'en' ? 'English' : 'Hindi' }));
     }, [lang]);
@@ -209,7 +213,7 @@ const Login = () => {
                         const role = logRes.user?.role;
                         if (role === 'DISTRIBUTOR') navigate('/distributor');
                         else if (role === 'SUPER_DISTRIBUTOR' || role === 'SUPERADMIN') navigate('/superadmin');
-                        else if (['ADMIN', 'NATIONAL_HEADER', 'STATE_HEADER', 'REGIONAL_HEADER', 'EMPLOYEE'].includes(role)) navigate('/admin');
+                        else if (['ADMIN', 'SUPERADMIN', 'NATIONAL_HEADER', 'STATE_HEADER', 'REGIONAL_HEADER', 'EMPLOYEE'].includes(role)) navigate('/admin');
                         else navigate('/dashboard');
                     } else {
                         alert(logRes.message || t('cred_error'));
@@ -218,25 +222,14 @@ const Login = () => {
                     return;
                 } else {
                     // OTP Login Method
-                    const user = dataService.getUserByUsername(loginForm.username);
-                    if (!user) {
-                        alert(t('user_not_found'));
-                        setIsLoading(false);
-                        return;
-                    }
-                    setTempUser(user);
+                    const mobile = loginForm.username;
                     try {
-                        const mobile = user.mobile || loginForm.username;
-                        const backendRes = await fetch(`${BACKEND_URL}/send-mobile-otp`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ mobile: mobile })
-                        });
-
-                        if (backendRes.ok) {
+                        const data = await otpService.sendMobileOtp(mobile);
+                        if (data.success) {
+                            setTempUser({ username: mobile, mobile: mobile });
                             setLoginStep('otp');
                         } else {
-                            alert("Failed to send OTP.");
+                            alert(data.message || "Failed to send OTP.");
                         }
                     } catch (err) {
                         alert(`Connection error: ${err.message}`);
@@ -246,25 +239,23 @@ const Login = () => {
             } else if (loginStep === 'otp') {
                 // Verify Mobile OTP
                 try {
-                    const response = await fetch(`${BACKEND_URL}/verify-otp`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ identity: tempUser.mobile || tempUser.username, otp: enteredOtp })
-                    });
+                    const data = await otpService.verifyOtp(tempUser.mobile || tempUser.username, enteredOtp);
+                    if (data.success) {
+                        const verifiedUser = { ...data.user };
+                        if (verifiedUser.role) verifiedUser.role = String(verifiedUser.role).toUpperCase();
 
-                    if (response.ok) {
-                        const data = await response.json();
-                        localStorage.setItem('rupiksha_user', JSON.stringify(tempUser));
-                        localStorage.setItem('rupiksha_token', data.token || 'MOCK_TOKEN_' + Date.now());
-                        setUser(tempUser);
+                        localStorage.setItem('rupiksha_user', JSON.stringify(verifiedUser));
+                        localStorage.setItem('rupiksha_token', data.token);
+                        setUser(verifiedUser);
                         setIsLocked(false);
-                        const role = tempUser.role;
+
+                        const role = verifiedUser.role;
                         if (role === 'DISTRIBUTOR') navigate('/distributor');
                         else if (role === 'SUPER_DISTRIBUTOR' || role === 'SUPERADMIN') navigate('/superadmin');
-                        else if (['ADMIN', 'NATIONAL_HEADER', 'STATE_HEADER', 'REGIONAL_HEADER', 'EMPLOYEE'].includes(role)) navigate('/admin');
+                        else if (['ADMIN', 'SUPERADMIN', 'NATIONAL_HEADER', 'STATE_HEADER', 'REGIONAL_HEADER', 'EMPLOYEE'].includes(role)) navigate('/admin');
                         else navigate('/dashboard');
                     } else {
-                        alert("Verification failed.");
+                        alert(data.message || "Verification failed.");
                     }
                 } catch (error) {
                     alert(`Connection error: ${error.message}`);
@@ -272,30 +263,16 @@ const Login = () => {
                 setIsLoading(false);
             }
         } else if (view === 'register') {
-            // Register usually goes to backend
             try {
-                const res = await fetch(`${BACKEND_URL}/register`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ ...registerForm, role: registerForm.role || 'RETAILER' })
-                });
-                if (!res.ok) {
-                    const errorText = await res.text();
-                    console.error("Login Page Register Fail:", res.status, errorText);
-                    alert(`Registration Failed (${res.status}): ${errorText.substring(0, 50)}`);
-                    setIsLoading(false);
-                    return;
-                }
-                const data = await res.json();
-                if (data.success) {
+                const res = await dataService.requestRegistration(registerForm);
+                if (res.success) {
                     setView('login');
                     alert(`Registration Successful! Please wait for admin approval.`);
                 } else {
-                    alert(data.message || "Registration Failed");
+                    alert(res.message || "Registration Failed");
                 }
             } catch (e) {
-                console.error("Login Page Register Exception:", e);
-                alert("Server Connection Failed or CORS Error. Please ensure backend is running.");
+                alert("Server Connection Failed. Please ensure backend is running.");
             }
             setIsLoading(false);
         } else {
@@ -311,140 +288,134 @@ const Login = () => {
     // -- Portal Selection Screen --------------------------------------------
     if (portal === 'select') {
         return (
-            <div className="min-h-screen bg-[#020617] flex flex-col items-center justify-start font-['Montserrat',sans-serif] relative overflow-x-clip py-10 md:py-8 px-4">
+            <div className="h-screen bg-white flex flex-col items-center justify-center font-['Outfit',sans-serif] relative overflow-hidden p-4 md:p-8">
+                {/* ── PREMIUM MESH BACKGROUND ── */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    <motion.div
+                        animate={{
+                            x: [0, 100, 0],
+                            y: [0, -50, 0],
+                            scale: [1, 1.2, 1],
+                        }}
+                        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-blue-100/40 rounded-full blur-[120px]"
+                    />
+                    <motion.div
+                        animate={{
+                            x: [0, -80, 0],
+                            y: [0, 100, 0],
+                            scale: [1, 1.3, 1],
+                        }}
+                        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute -bottom-[10%] -right-[10%] w-[60%] h-[60%] bg-indigo-100/30 rounded-full blur-[150px]"
+                    />
+                    <motion.div
+                        animate={{
+                            x: [0, 50, 0],
+                            y: [0, 80, 0],
+                        }}
+                        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute top-[20%] right-[10%] w-[30%] h-[30%] bg-amber-100/20 rounded-full blur-[100px]"
+                    />
 
+                    {/* Subtle Dot Pattern */}
+                    <div className="absolute inset-0 opacity-[0.4] mix-blend-multiply"
+                        style={{ backgroundImage: 'radial-gradient(#e2e8f0 1.5px, transparent 1.5px)', backgroundSize: '32px 32px' }} />
+                </div>
 
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="w-full max-w-[1240px] flex flex-col items-center z-10"
+                    className="w-full max-w-7xl flex flex-col items-center z-10"
                 >
-                    {/* Brand Header */}
-                    <motion.div
-                        initial={{ opacity: 0, y: -30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
-                        className="flex flex-col items-center mb-4 md:mb-6 text-center"
-                    >
-                        <div className="relative mb-2 md:mb-3">
-                            <img src={logo} alt="Rupiksha" style={{ height: '200px' }} className="object-contain brightness-0 invert" />
-                        </div>
-                        <h1 className="text-white text-xl md:text-lg font-black uppercase tracking-[0.15em] leading-tight">
-                            SELECT YOUR <span className="text-blue-500">PORTAL</span>
-                        </h1>
-                        <p className="text-white/40 text-[9px] md:text-[9px] font-bold uppercase tracking-[0.4em] mt-1">Making Life Simple & Digital</p>
-                    </motion.div>
+                    {/* Brand Section */}
+                    <div className="flex flex-col items-center text-center">
+                        <motion.div
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ type: "spring", stiffness: 100, damping: 15 }}
+                        >
+                            <img src={logo} alt="Rupiksha" style={{ height: '100px', width: 'auto' }} className="object-contain" />
+                        </motion.div>
+                    </div>
 
-                    {/* Portal Selection Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-10 w-full max-w-[95vw] lg:max-w-[1400px]">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full max-w-6xl mt-6 md:mt-8 z-10 px-4">
                         {/* Retailer Card */}
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.2 }}
-                            whileHover={{ y: -12, transition: { duration: 0.3 } }}
-                            className="group relative h-[320px] md:h-[500px] bg-gradient-to-b from-blue-600 to-blue-900 rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-8 flex flex-col text-left overflow-hidden border border-white/10"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            whileHover={{
+                                y: -8,
+                                backgroundColor: 'rgba(30, 58, 138, 0.98)',
+                                borderColor: 'rgba(147, 197, 253, 0.5)',
+                            }}
+                            className="bg-blue-600/10 backdrop-blur-[40px] rounded-[2.5rem] overflow-hidden border border-blue-200/50 flex flex-col h-auto min-h-[280px] md:min-h-[320px] shadow-[0_40px_100px_rgba(30,58,138,0.06)] transition-all duration-700 group cursor-pointer relative"
+                            onClick={() => setPortal('retailer')}
                         >
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                            <div className="relative z-10 flex flex-col h-full">
-                                <div className="w-16 h-16 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl flex items-center justify-center mb-10 group-hover:scale-110 group-hover:bg-white/20 transition-all duration-500">
-                                    <Users size={32} className="text-white" />
-                                </div>
-                                <div className="space-y-4">
-                                    <span className="text-[10px] font-black text-blue-200 uppercase tracking-[0.2em] opacity-60">Panel A</span>
-                                    <h3 className="text-2xl lg:text-3xl font-black text-white uppercase tracking-tighter leading-none">
-                                        RETAILER
-                                    </h3>
-                                </div>
-
-                                <div className="mt-auto">
-                                    <motion.div
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        onClick={() => setPortal('retailer')}
-                                        className="inline-flex items-center gap-3 text-white font-black text-[10px] uppercase tracking-[0.2em] cursor-pointer bg-white/10 hover:bg-white/20 px-6 py-3 rounded-full border border-white/10 transition-all"
-                                    >
-                                        <span className="group-hover:tracking-[0.3em] transition-all duration-300">LOGIN NOW</span>
-                                        <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform duration-300" />
-                                    </motion.div>
-                                </div>
+                            <div className="flex-1 p-4 flex items-center justify-center bg-blue-50/30 group-hover:bg-transparent transition-colors duration-700">
+                                <img src={characterShop} alt="Retailer" className="h-24 md:h-28 object-contain group-hover:scale-110 transition-transform duration-1000 drop-shadow-xl" />
+                            </div>
+                            <div className="p-6 text-center space-y-4 z-10">
+                                <h3 className="text-blue-900 group-hover:text-white text-xl font-black uppercase tracking-tighter transition-colors">
+                                    Retailer
+                                </h3>
+                                <motion.button className="w-full bg-blue-600 text-white group-hover:bg-white group-hover:text-blue-700 py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2">
+                                    Login <ArrowRight size={14} className="group-hover:text-blue-700" />
+                                </motion.button>
                             </div>
                         </motion.div>
 
                         {/* Distributor Card */}
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.3 }}
-                            whileHover={{ y: -12, transition: { duration: 0.3 } }}
-                            className="group relative h-[320px] md:h-[500px] bg-gradient-to-b from-amber-500 to-orange-700 rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-8 flex flex-col text-left overflow-hidden border border-white/10"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 }}
+                            whileHover={{
+                                y: -8,
+                                backgroundColor: 'rgba(17, 24, 39, 0.98)',
+                                borderColor: 'rgba(99, 102, 241, 0.4)',
+                            }}
+                            className="bg-slate-900/10 backdrop-blur-[40px] rounded-[2.5rem] overflow-hidden border border-slate-200 flex flex-col h-auto min-h-[280px] md:min-h-[320px] shadow-[0_40px_100px_rgba(0,0,0,0.03)] transition-all duration-700 group cursor-pointer relative"
+                            onClick={() => setPortal('distributor')}
                         >
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                            <div className="relative z-10 flex flex-col h-full">
-                                <div className="w-16 h-16 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl flex items-center justify-center mb-10 group-hover:scale-110 group-hover:bg-white/20 transition-all duration-500">
-                                    <Building2 size={32} className="text-white" />
-                                </div>
-                                <div className="space-y-4">
-                                    <span className="text-[10px] font-black text-amber-200 uppercase tracking-[0.2em] opacity-60">Panel B</span>
-                                    <h3 className="text-2xl lg:text-3xl font-black text-white uppercase tracking-tighter leading-none">
-                                        DISTRIBUTOR
-                                    </h3>
-                                </div>
-
-                                <div className="mt-auto">
-                                    <motion.div
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        onClick={() => setPortal('distributor')}
-                                        className="inline-flex items-center gap-3 text-white font-black text-[10px] uppercase tracking-[0.2em] cursor-pointer bg-white/10 hover:bg-white/20 px-6 py-3 rounded-full border border-white/10 transition-all"
-                                    >
-                                        <span className="group-hover:tracking-[0.3em] transition-all duration-300">LOGIN NOW</span>
-                                        <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform duration-300" />
-                                    </motion.div>
-                                </div>
+                            <div className="flex-1 p-4 flex items-center justify-center bg-slate-50/50 group-hover:bg-transparent transition-colors duration-700">
+                                <img src={distributorChar} alt="Distributor" className="h-24 md:h-28 object-contain group-hover:scale-110 transition-transform duration-1000 drop-shadow-xl" />
+                            </div>
+                            <div className="p-6 text-center space-y-4 z-10">
+                                <h3 className="text-slate-900 group-hover:text-white text-xl font-black uppercase tracking-tighter transition-colors">
+                                    Distributor
+                                </h3>
+                                <motion.button className="w-full bg-slate-900 text-white group-hover:bg-white group-hover:text-slate-900 py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2">
+                                    Login <ArrowRight size={14} className="group-hover:text-slate-900" />
+                                </motion.button>
                             </div>
                         </motion.div>
 
-                        {/* SuperAdmin Card */}
+                        {/* Super Distributor Card */}
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.4 }}
-                            whileHover={{ y: -12, transition: { duration: 0.3 } }}
-                            className="group relative h-[320px] md:h-[500px] bg-gradient-to-b from-indigo-700 to-purple-900 rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-8 flex flex-col text-left overflow-hidden border border-white/10"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                            whileHover={{
+                                y: -8,
+                                backgroundColor: 'rgba(234, 88, 12, 0.98)', // Premium Orange (Orange 600)
+                                borderColor: 'rgba(251, 191, 36, 0.6)',
+                            }}
+                            className="bg-amber-600/10 backdrop-blur-[40px] rounded-[2.5rem] overflow-hidden border border-amber-200/50 flex flex-col h-auto min-h-[280px] md:min-h-[320px] shadow-[0_40px_100px_rgba(234,88,12,0.05)] transition-all duration-700 group cursor-pointer relative"
+                            onClick={() => setPortal('distributor')} // Assuming it uses distributor login logic for now
                         >
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                            <div className="relative z-10 flex flex-col h-full">
-                                <div className="w-16 h-16 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl flex items-center justify-center mb-10 group-hover:scale-110 group-hover:bg-white/20 transition-all duration-500">
-                                    <Shield size={32} className="text-white" />
-                                </div>
-                                <div className="space-y-4">
-                                    <span className="text-[10px] font-black text-indigo-200 uppercase tracking-[0.2em] opacity-60">Control Center</span>
-                                    <h3 className="text-2xl lg:text-3xl font-black text-white uppercase tracking-tighter leading-none">
-                                        SUPER DISTRIBUTOR
-                                    </h3>
-                                </div>
-
-                                <div className="mt-auto">
-                                    <motion.div
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        onClick={() => setPortal('superadmin')}
-                                        className="inline-flex items-center gap-3 text-white font-black text-[10px] uppercase tracking-[0.2em] cursor-pointer bg-white/10 hover:bg-white/20 px-6 py-3 rounded-full border border-white/10 transition-all"
-                                    >
-                                        <span className="group-hover:tracking-[0.3em] transition-all duration-300">SUPER DISTRIBUTOR Login</span>
-                                        <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform duration-300" />
-                                    </motion.div>
-                                </div>
+                            <div className="flex-1 p-4 flex items-center justify-center bg-amber-50/30 group-hover:bg-transparent transition-colors duration-700">
+                                <img src={superDistributorChar} alt="Super Distributor" className="h-24 md:h-28 object-contain group-hover:scale-110 transition-transform duration-1000 drop-shadow-xl" />
+                            </div>
+                            <div className="p-6 text-center space-y-4 z-10">
+                                <h3 className="text-amber-900 group-hover:text-white text-xl font-black uppercase tracking-tighter transition-colors">
+                                    Super <br /> Distributor
+                                </h3>
+                                <motion.button className="w-full bg-amber-600 text-white group-hover:bg-white group-hover:text-orange-600 py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2">
+                                    Access Elite <ArrowRight size={14} className="group-hover:text-orange-600" />
+                                </motion.button>
                             </div>
                         </motion.div>
-                    </div>
-
-                    {/* Footer Copyright */}
-                    <div className="mt-24 md:mt-32 text-center opacity-30">
-                        <p className="text-white text-[10px] font-black uppercase tracking-[0.8em]">
-                            © 2026 RuPiKsha Digital Services Pvt. Ltd.
-                        </p>
                     </div>
                 </motion.div>
             </div>
@@ -454,74 +425,101 @@ const Login = () => {
     // -- Distributor Login Screen ---------------------------------------------
     if (portal === 'distributor') {
         return (
-            <div className="min-h-screen bg-[#f8fafc] flex flex-col font-['Montserrat',sans-serif]">
-                <header className="bg-white px-4 md:px-8 py-2 flex items-center justify-between shadow-sm border-b border-slate-100 sticky top-0 z-50">
-                    <div className="flex flex-col items-center cursor-pointer" onClick={() => setPortal('select')}>
-                        <img src={logo} alt="RUPIKSHA" style={{ height: '40px', width: 'auto' }} className="object-contain" />
-                        <span className="text-[8px] font-bold text-slate-400 -mt-1 uppercase tracking-tighter self-start">Making Life Simple</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                        <span className="bg-amber-100 text-amber-700 text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-amber-200">Distributor Portal — B Panel</span>
-                        <button
-                            onClick={() => setPortal('select')}
-                            className="text-[10px] font-black text-slate-500 hover:text-slate-800 uppercase tracking-wider flex items-center gap-1"
+            <div className="h-screen bg-white flex flex-col font-['Outfit',sans-serif] overflow-hidden">
+                <header className="bg-white/80 backdrop-blur-md px-6 md:px-12 py-3 flex items-center justify-between shadow-sm sticky top-0 z-50 border-b border-slate-100">
+                    <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="flex items-center gap-3 cursor-pointer"
+                        onClick={() => setPortal('select')}
+                    >
+                        <img src={logo} alt="RUPIKSHA" style={{ height: '44px', width: 'auto' }} className="object-contain" />
+                    </motion.div>
+                    <div className="flex items-center gap-3 md:gap-5">
+                        <div className="flex items-center bg-slate-100 rounded-full p-1 p-0.5">
+                            <button onClick={() => setLang('en')} className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest transition-all ${lang === 'en' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}>EN</button>
+                            <button onClick={() => setLang('hi')} className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest transition-all ${lang === 'hi' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}>HI</button>
+                        </div>
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={(e) => { e.stopPropagation(); setPortal('select'); }}
+                            className="bg-amber-50 text-amber-600 text-[8px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-amber-100 flex items-center gap-1.5 transition-all"
                         >
-                            <ChevronLeft size={14} /> Change Portal
-                        </button>
+                            <ChevronLeft size={12} />
+                            Distributor
+                        </motion.button>
+                        <div className="hidden sm:flex flex-col text-[12px] font-bold text-slate-600 tracking-wide border-l border-slate-200 pl-4 space-y-0.5">
+                            <span className="flex items-center gap-2 uppercase"><Phone size={14} className="text-blue-600 fill-blue-50" strokeWidth={2.5} /> 0621-4008548 | 7004128310</span>
+                            <span className="flex items-center gap-2 lowercase"><Mail size={14} className="text-blue-600 fill-blue-50" strokeWidth={2.5} /> customercare@rupiksha.com</span>
+                        </div>
                     </div>
                 </header>
 
-                <main className="flex-1 flex flex-col md:flex-row overflow-hidden bg-white">
-                    {/* Left: Distributor Login */}
-                    <div className="w-full md:w-[45%] lg:w-[40%] p-6 md:p-12 flex flex-col items-center justify-center bg-white overflow-y-auto">
-                        <div className="w-full max-w-[440px] space-y-6">
-                            <h2 className="text-amber-500 text-2xl md:text-3xl font-black text-center tracking-tighter uppercase">
-                                Distributor Login
-                            </h2>
-                            <div className="bg-white rounded-xl shadow-[0_15px_40px_rgba(0,0,0,0.12)] border border-slate-200 overflow-hidden">
-                                <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-center py-2.5 font-bold uppercase tracking-widest text-sm">
-                                    B Panel — Distributor Access
+                <main className="flex-1 flex flex-col md:flex-row overflow-hidden">
+                    {/* Left: Login Form */}
+                    <div className="w-full md:w-1/2 lg:w-[40%] p-6 md:p-12 flex flex-col items-center justify-center bg-amber-100 h-full">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="w-full max-w-[420px] space-y-4 md:space-y-6"
+                        >
+                            <div className="space-y-2">
+                                <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
+                                    Welcome to <span className="text-amber-500">Rupiksha</span>
+                                </h2>
+                            </div>
+
+                            <div className="bg-white rounded-3xl shadow-2xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+                                <div className="bg-blue-600 py-3 flex items-center justify-center">
+                                    <span className="text-white text-[10px] font-black uppercase tracking-[0.2em]">Distributor Login</span>
                                 </div>
-                                <div className="p-8">
+                                <div className="p-6 md:p-10">
                                     <DistributorLogin />
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     </div>
 
-                    {/* Right: Distributor promo banner */}
-                    <div className="hidden md:flex flex-1 bg-gradient-to-br from-[#162543] to-[#0d1b35] relative overflow-hidden items-center justify-center p-8 lg:p-14">
-                        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                            <div className="absolute top-0 right-0 w-96 h-96 bg-amber-400/10 blur-[150px] rounded-full -mr-48 -mt-48" />
-                            <div className="absolute bottom-0 left-0 w-80 h-80 bg-orange-500/10 blur-[120px] rounded-full -ml-40 -mb-40" />
+                    {/* Right: Premium Creative Banner */}
+                    <div className="hidden md:flex flex-1 bg-slate-50 relative overflow-hidden items-center justify-center p-12">
+                        <div className="absolute inset-0">
+                            <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-amber-500/5 rounded-full blur-[100px] -mr-40 -mt-40" />
+                            <div className="absolute bottom-0 left-0 w-[30rem] h-[30rem] bg-orange-500/5 rounded-full blur-[100px] -ml-20 -mb-20" />
                         </div>
+
                         <motion.div
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.6 }}
-                            className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-12 text-white max-w-md text-center space-y-6 z-10"
+                            transition={{ duration: 0.8 }}
+                            className="relative z-10 w-full max-w-lg"
                         >
-                            <div className="w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-500 rounded-3xl flex items-center justify-center mx-auto shadow-2xl shadow-amber-500/30">
-                                <Building2 size={40} className="text-white" />
-                            </div>
-                            <div className="space-y-2">
-                                <span className="text-[9px] font-black text-amber-300 uppercase tracking-widest">Distributor B Panel</span>
-                                <h3 className="text-3xl font-black tracking-tight">Manage Your<br />Retailer Network</h3>
-                                <p className="text-white/60 text-sm font-bold">Track retailer performance, manage transactions, and grow your distribution business.</p>
-                            </div>
-                            {[
-                                '142+ Active Retailers',
-                                'Real-time Transaction Reports',
-                                'Commission Tracking',
-                                'Ledger Management',
-                            ].map((f, i) => (
-                                <div key={i} className="flex items-center gap-3 text-left bg-white/5 border border-white/10 rounded-xl px-4 py-3">
-                                    <div className="w-5 h-5 bg-amber-400 rounded-full flex items-center justify-center shrink-0">
-                                        <Check size={11} className="text-white" />
-                                    </div>
-                                    <span className="text-sm font-bold text-white/80">{f}</span>
+                            <div className="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-amber-900/5 border border-white space-y-4 md:space-y-6">
+                                <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-500/20">
+                                    <Building2 size={32} className="text-white" />
                                 </div>
-                            ))}
+
+                                <div className="space-y-4">
+                                    <h3 className="text-3xl font-black text-slate-900">Scale Your<br />Network Efficiently.</h3>
+                                    <p className="text-slate-500 font-medium">Real-time monitoring and advanced reporting for modern distributors.</p>
+                                </div>
+
+                                <div className="grid grid-cols-1 gap-3">
+                                    {[
+                                        'Centralized Member Management',
+                                        'Instant Commission Settlement',
+                                        'Hierarchical Performance Tracking',
+                                        'Dedicated Channel Support'
+                                    ].map((f, i) => (
+                                        <div key={i} className="flex items-center gap-4 bg-slate-50 rounded-2xl px-5 py-4 border border-slate-100">
+                                            <div className="w-6 h-6 bg-amber-100 rounded-full flex items-center justify-center shrink-0">
+                                                <Check size={14} className="text-amber-600" />
+                                            </div>
+                                            <span className="text-sm font-bold text-slate-700">{f}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                         </motion.div>
                     </div>
                 </main>
@@ -532,74 +530,102 @@ const Login = () => {
     // -- SuperAdmin Login Screen ---------------------------------------------
     if (portal === 'superadmin') {
         return (
-            <div className="min-h-screen bg-[#f0f4ff] flex flex-col font-['Montserrat',sans-serif]">
-                <header className="bg-white px-4 md:px-8 py-2 flex items-center justify-between shadow-sm border-b border-slate-100 sticky top-0 z-50">
-                    <div className="flex flex-col items-center cursor-pointer" onClick={() => setPortal('select')}>
-                        <img src={logo} alt="RUPIKSHA" style={{ height: '40px', width: 'auto' }} className="object-contain" />
-                        <span className="text-[8px] font-bold text-slate-400 -mt-1 uppercase tracking-tighter self-start">Making Life Simple</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                        <span className="bg-indigo-100 text-indigo-700 text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-indigo-200">Control Panel — SuperAdmin</span>
-                        <button
-                            onClick={() => setPortal('select')}
-                            className="text-[10px] font-black text-slate-500 hover:text-slate-800 uppercase tracking-wider flex items-center gap-1"
+            <div className="h-screen bg-white flex flex-col font-['Outfit',sans-serif] overflow-hidden">
+                <header className="bg-white/80 backdrop-blur-md px-6 md:px-12 py-3 flex items-center justify-between shadow-sm sticky top-0 z-50 border-b border-slate-100">
+                    <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="flex items-center gap-3 cursor-pointer"
+                        onClick={() => setPortal('select')}
+                    >
+                        <img src={logo} alt="RUPIKSHA" style={{ height: '44px', width: 'auto' }} className="object-contain" />
+                    </motion.div>
+                    <div className="flex items-center gap-3 md:gap-5">
+                        <div className="flex items-center bg-slate-100 rounded-full p-1 p-0.5">
+                            <button onClick={() => setLang('en')} className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest transition-all ${lang === 'en' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}>EN</button>
+                            <button onClick={() => setLang('hi')} className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest transition-all ${lang === 'hi' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}>HI</button>
+                        </div>
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={(e) => { e.stopPropagation(); setPortal('select'); }}
+                            className="bg-indigo-50 text-indigo-600 text-[8px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-indigo-100 flex items-center gap-1.5 transition-all"
                         >
-                            <ChevronLeft size={14} /> Change Portal
-                        </button>
+                            <ChevronLeft size={12} />
+                            Master
+                        </motion.button>
+                        <div className="hidden sm:flex flex-col text-[12px] font-bold text-slate-600 tracking-wide border-l border-slate-200 pl-4 space-y-0.5">
+                            <span className="flex items-center gap-2 uppercase"><Phone size={14} className="text-blue-600 fill-blue-50" strokeWidth={2.5} /> 0621-4008548 | 7004128310</span>
+                            <span className="flex items-center gap-2 lowercase"><Mail size={14} className="text-blue-600 fill-blue-50" strokeWidth={2.5} /> customercare@rupiksha.com</span>
+                        </div>
                     </div>
                 </header>
 
-                <main className="flex-1 flex flex-col md:flex-row overflow-hidden bg-white">
-                    {/* Left: SuperAdmin Login */}
-                    <div className="w-full md:w-[45%] lg:w-[40%] p-6 md:p-12 flex flex-col items-center justify-center bg-white overflow-y-auto">
-                        <div className="w-full max-w-[440px] space-y-6">
-                            <h2 className="text-[#312e81] text-2xl md:text-3xl font-black text-center tracking-tighter uppercase italic">
-                                Master Portal Login
-                            </h2>
-                            <div className="bg-white rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.12)] border border-slate-200 overflow-hidden">
-                                <div className="bg-gradient-to-r from-[#312e81] to-[#4338ca] text-white text-center py-2.5 font-bold uppercase tracking-widest text-sm">
-                                    System Control — Master Node Access
+                <main className="flex-1 flex flex-col md:flex-row overflow-hidden">
+                    {/* Left: Login Form */}
+                    <div className="w-full md:w-1/2 lg:w-[40%] p-6 md:p-12 flex flex-col items-center justify-center bg-amber-100 h-full">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="w-full max-w-[420px] space-y-4 md:space-y-6"
+                        >
+                            <div className="space-y-2">
+                                <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
+                                    Welcome to <span className="text-indigo-600">Rupiksha</span>
+                                </h2>
+                            </div>
+
+                            <div className="bg-white rounded-3xl shadow-2xl shadow-indigo-100/50 border border-indigo-50 overflow-hidden">
+                                <div className="bg-blue-600 py-3 flex items-center justify-center">
+                                    <span className="text-white text-[10px] font-black uppercase tracking-[0.2em]">Master Login</span>
                                 </div>
-                                <div className="p-8">
+                                <div className="p-6 md:p-10">
                                     <SuperAdminLogin />
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     </div>
 
-                    {/* Right: SuperAdmin promo banner */}
-                    <div className="hidden md:flex flex-1 bg-gradient-to-br from-[#1e1b4b] to-[#312e81] relative overflow-hidden items-center justify-center p-8 lg:p-14">
-                        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                            <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-400/10 blur-[150px] rounded-full -mr-48 -mt-48" />
-                            <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/10 blur-[120px] rounded-full -ml-40 -mb-40" />
+                    {/* Right: Creative Banner */}
+                    <div className="hidden md:flex flex-1 bg-indigo-900 relative overflow-hidden items-center justify-center p-12">
+                        <div className="absolute inset-0">
+                            <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-indigo-500/20 rounded-full blur-[100px] -mr-40 -mt-40" />
+                            <div className="absolute bottom-0 left-0 w-[30rem] h-[30rem] bg-purple-500/20 rounded-full blur-[100px] -ml-20 -mb-20" />
+                            <div className="absolute inset-0 opacity-[0.05] bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
                         </div>
+
                         <motion.div
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.6 }}
-                            className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-12 text-white max-w-md text-center space-y-6 z-10"
+                            transition={{ duration: 0.8 }}
+                            className="relative z-10 w-full max-w-lg"
                         >
-                            <div className="w-20 h-20 bg-gradient-to-br from-indigo-400 to-purple-600 rounded-3xl flex items-center justify-center mx-auto shadow-2xl shadow-indigo-500/30">
-                                <Shield size={40} className="text-white" />
-                            </div>
-                            <div className="space-y-2">
-                                <span className="text-[9px] font-black text-indigo-300 uppercase tracking-widest">Super Distributor Control Panel</span>
-                                <h3 className="text-3xl font-black tracking-tight">Ultimate Authority & OverSight</h3>
-                                <p className="text-white/60 text-sm font-bold">Monitor the entire ecosystem from a single dashboard. Manage partners, track growth and ensure security.</p>
-                            </div>
-                            {[
-                                'Manage All Distributors',
-                                'Manage All Retailers',
-                                'System-wide Transactions',
-                                'Direct Service Overrides',
-                            ].map((f, i) => (
-                                <div key={i} className="flex items-center gap-3 text-left bg-white/5 border border-white/10 rounded-xl px-4 py-3">
-                                    <div className="w-5 h-5 bg-indigo-400 rounded-full flex items-center justify-center shrink-0">
-                                        <Check size={11} className="text-white" />
-                                    </div>
-                                    <span className="text-sm font-bold text-white/80">{f}</span>
+                            <div className="bg-white/10 backdrop-blur-xl rounded-[2.5rem] p-8 md:p-12 border border-white/20 space-y-4 md:space-y-6 text-white">
+                                <div className="w-16 h-16 bg-white flex items-center justify-center rounded-2xl shadow-xl">
+                                    <Shield size={32} className="text-indigo-600" />
                                 </div>
-                            ))}
+
+                                <div className="space-y-4">
+                                    <h3 className="text-3xl font-black">Ultimate Oversight.<br />Unified Control.</h3>
+                                    <p className="text-white/70 font-medium">Empower your administrative team with tools designed for massive scale.</p>
+                                </div>
+
+                                <div className="grid grid-cols-1 gap-3">
+                                    {[
+                                        'Global Transaction Auditing',
+                                        'Member Workflow Approvals',
+                                        'System-wide Wallet Controls',
+                                        'Advanced Security Management'
+                                    ].map((f, i) => (
+                                        <div key={i} className="flex items-center gap-4 bg-white/5 rounded-2xl px-5 py-4 border border-white/10">
+                                            <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center shrink-0">
+                                                <Check size={14} className="text-white" />
+                                            </div>
+                                            <span className="text-sm font-bold">{f}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                         </motion.div>
                     </div>
                 </main>
@@ -609,88 +635,115 @@ const Login = () => {
 
     // -- Retailer Portal (Default / portal === 'retailer') ----------------------
     return (
-        <div className="min-h-screen bg-[#f8fafc] flex flex-col font-['Montserrat',sans-serif]">
-            {/* Header — similar style to other portals */}
-            <header className="bg-white px-4 md:px-8 py-2 flex items-center justify-between shadow-sm border-b border-slate-100 sticky top-0 z-50">
-                <div className="flex flex-col items-center cursor-pointer" onClick={() => setPortal('select')}>
-                    <img src={logo} alt="RUPIKSHA" style={{ height: '40px', width: 'auto' }} className="object-contain" />
-                    <span className="text-[8px] font-bold text-slate-400 -mt-1 uppercase tracking-tighter self-start">Making Life Simple</span>
-                </div>
-                <div className="flex items-center gap-3">
-                    <span className="bg-blue-100 text-blue-700 text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-blue-200">Retailer Portal — A Panel</span>
-                    <button
-                        onClick={() => setPortal('select')}
-                        className="text-[10px] font-black text-slate-500 hover:text-slate-800 uppercase tracking-wider flex items-center gap-1"
+        <div className="h-screen bg-white flex flex-col font-['Outfit',sans-serif] overflow-hidden">
+            <header className="bg-white/80 backdrop-blur-md px-6 md:px-12 py-3 flex items-center justify-between shadow-sm sticky top-0 z-50 border-b border-slate-100">
+                <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="flex items-center gap-3 cursor-pointer"
+                    onClick={() => setPortal('select')}
+                >
+                    <img src={logo} alt="RUPIKSHA" style={{ height: '44px', width: 'auto' }} className="object-contain" />
+                </motion.div>
+                <div className="flex items-center gap-3 md:gap-5">
+                    <div className="flex items-center bg-slate-100 rounded-full p-1 p-0.5">
+                        <button onClick={() => setLang('en')} className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest transition-all ${lang === 'en' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}>EN</button>
+                        <button onClick={() => setLang('hi')} className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest transition-all ${lang === 'hi' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}>HI</button>
+                    </div>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={(e) => { e.stopPropagation(); setPortal('select'); }}
+                        className="bg-blue-50 text-blue-600 text-[8px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-blue-100 flex items-center gap-1.5 transition-all"
                     >
-                        <ChevronLeft size={14} /> Change Portal
-                    </button>
+                        <ChevronLeft size={12} />
+                        Retailer
+                    </motion.button>
+                    <div className="hidden sm:flex flex-col text-[12px] font-bold text-slate-600 tracking-wide border-l border-slate-200 pl-4 space-y-0.5">
+                        <span className="flex items-center gap-2 uppercase"><Phone size={14} className="text-blue-600 fill-blue-50" strokeWidth={2.5} /> 0621-4008548 | 7004128310</span>
+                        <span className="flex items-center gap-2 lowercase"><Mail size={14} className="text-blue-600 fill-blue-50" strokeWidth={2.5} /> customercare@rupiksha.com</span>
+                    </div>
                 </div>
             </header>
 
-            <main className="flex-1 flex flex-col md:flex-row overflow-hidden bg-white">
-                {/* Left: Retailer Login */}
-                <div className="w-full md:w-[45%] lg:w-[40%] p-6 md:p-12 flex flex-col items-center justify-center bg-white overflow-y-auto">
-                    <div className="w-full max-w-[440px] space-y-6">
-                        <h2 className="text-[#1e40af] text-2xl md:text-3xl font-black text-center tracking-tighter uppercase italic">
-                            Retailer Login
-                        </h2>
-                        <div className="bg-white rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.12)] border border-slate-200 overflow-hidden">
-                            <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white text-center py-2.5 font-bold uppercase tracking-widest text-sm">
-                                A Panel — Retailer Access
+            <main className="flex-1 flex flex-col md:flex-row overflow-hidden">
+                {/* Left: Login Form */}
+                <div className="w-full md:w-1/2 lg:w-[40%] p-6 md:p-12 flex flex-col items-center justify-center bg-amber-100 h-full">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="w-full max-w-[420px] space-y-4 md:space-y-6"
+                    >
+                        <div className="space-y-2">
+                            <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
+                                Welcome to <span className="text-blue-600">Rupiksha</span>
+                            </h2>
+                        </div>
+
+                        <div className="bg-white rounded-3xl shadow-2xl shadow-blue-100/50 border border-blue-50 overflow-hidden">
+                            <div className="bg-blue-600 py-3 flex items-center justify-center">
+                                <span className="text-white text-[10px] font-black uppercase tracking-[0.2em]">Retailer Login</span>
                             </div>
-                            <div className="p-8">
+                            <div className="p-8 md:p-10">
                                 <RetailerLogin />
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
 
-                {/* Right: Retailer Promo Panel */}
-                <div className="hidden md:flex flex-1 bg-gradient-to-br from-[#0c1a3a] via-[#1e40af] to-[#0c1a3a] relative overflow-hidden items-center justify-center p-8 lg:p-14">
-                    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-300/10 blur-[150px] rounded-full -mr-48 -mt-48" />
-                        <div className="absolute bottom-0 left-0 w-80 h-80 bg-blue-200/10 blur-[120px] rounded-full -ml-40 -mb-40" />
+                {/* Right: Creative Banner */}
+                <div className="hidden md:flex flex-1 bg-blue-50 relative overflow-hidden items-center justify-center p-12">
+                    <div className="absolute inset-0">
+                        <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-blue-500/5 rounded-full blur-[100px] -mr-40 -mt-40" />
+                        <div className="absolute bottom-0 left-0 w-[30rem] h-[30rem] bg-blue-400/5 rounded-full blur-[100px] -ml-20 -mb-20" />
                     </div>
+
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.6 }}
-                        className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-12 text-white max-w-md text-center space-y-6 z-10"
+                        transition={{ duration: 0.8 }}
+                        className="relative z-10 w-full max-w-lg"
                     >
-                        <div className="w-20 h-20 bg-gradient-to-br from-blue-400 to-blue-700 rounded-3xl flex items-center justify-center mx-auto shadow-2xl shadow-blue-500/30">
-                            <Users size={40} className="text-white" />
-                        </div>
-                        <div className="space-y-2">
-                            <span className="text-[9px] font-black text-blue-300 uppercase tracking-widest">Retailer A Panel</span>
-                            <h3 className="text-3xl font-black tracking-tight">Grow Your<br />Business Today</h3>
-                            <p className="text-white/60 text-sm font-bold">Access AEPS, DMT, BBPS, Travel &amp; 20+ services — all on one powerful platform.</p>
-                        </div>
-                        {[
-                            'AEPS & Micro ATM Services',
-                            'BBPS — Utility Bill Payments',
-                            'DMT — Money Transfer',
-                            'Travel Booking & Insurance',
-                            '24×7 Dedicated Support',
-                        ].map((f, i) => (
-                            <div key={i} className="flex items-center gap-3 text-left bg-white/5 border border-white/10 rounded-xl px-4 py-3">
-                                <div className="w-5 h-5 bg-blue-400 rounded-full flex items-center justify-center shrink-0">
-                                    <Check size={11} className="text-white" />
-                                </div>
-                                <span className="text-sm font-bold text-white/80">{f}</span>
+                        <div className="bg-white rounded-[2.5rem] p-8 md:p-10 shadow-2xl shadow-blue-900/5 border border-white space-y-4 md:space-y-6">
+                            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+                                <Users size={32} className="text-white" />
                             </div>
-                        ))}
+
+                            <div className="space-y-4">
+                                <h3 className="text-3xl font-black text-slate-900">Empowering Every<br />Merchant Everyday.</h3>
+                                <p className="text-slate-500 font-medium">Join 50k+ retailers providing essential digital services across India.</p>
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-3">
+                                {[
+                                    'AEPS & Aadhaar Withdrawals',
+                                    'DMT & Instant Money Transfer',
+                                    'Utility Bill Payments (BBPS)',
+                                    'Comprehensive Travel Booking'
+                                ].map((f, i) => (
+                                    <div key={i} className="flex items-center gap-4 bg-slate-50 rounded-2xl px-5 py-4 border border-slate-100">
+                                        <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center shrink-0">
+                                            <Check size={14} className="text-blue-600" />
+                                        </div>
+                                        <span className="text-sm font-bold text-slate-700">{f}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </motion.div>
                 </div>
             </main>
 
             {/* WhatsApp Float */}
-            <a href="https://wa.me/919289309524" target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-[100] group">
-                <div className="absolute -top-14 right-0 bg-white text-[#1e40af] px-4 py-2 rounded-lg shadow-2xl text-[10px] font-black whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 border border-slate-100 uppercase">
+            <a href="https://wa.me/917004128310" target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-[100] group">
+                <div className="absolute -top-14 right-0 bg-white text-blue-600 px-4 py-2 rounded-lg shadow-2xl text-[10px] font-black whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 border border-slate-100 uppercase">
                     Chat with Us
                     <div className="absolute bottom-[-6px] right-6 w-3 h-3 bg-white rotate-45 border-r border-b border-slate-100" />
                 </div>
                 <div className="bg-[#25D366] text-white p-4 rounded-full shadow-[0_10px_30px_rgba(37,211,102,0.5)] hover:bg-[#128C7E] hover:scale-110 active:scale-90 transition-all relative flex items-center justify-center">
-                    <MessageSquare size={32} />
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.134.298-.348.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.446 4.432-9.877 9.888-9.877 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.446-4.435 9.878-9.89 9.878m8.391-18.332A11.944 11.944 0 0012.05 0C5.41 0 .011 5.399.007 12.04c0 2.123.554 4.197 1.608 6.022L0 24l6.117-1.605a11.947 11.947 0 005.933 1.568h.005c6.637 0 12.036-5.402 12.041-12.042a11.95 11.95 0 00-3.645-8.522" />
+                    </svg>
                     <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-600 border-2 border-white rounded-full flex items-center justify-center text-[10px] font-bold animate-bounce shadow">1</span>
                 </div>
             </a>

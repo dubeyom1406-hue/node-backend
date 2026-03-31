@@ -6,7 +6,10 @@ import characterImg from '../assets/character-removebg-preview.png';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import VerticalCardSlider from '../components/VerticalCardSlider';
+import PhotoSlider from '../components/PhotoSlider';
 const aadhaar_3d_logo = "https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/Aadhaar_Logo.svg/1200px-Aadhaar_Logo.svg.png";
+import { useLanguage } from '../context/LanguageContext';
+import { Phone, Mail, RefreshCcw } from 'lucide-react';
 
 /* ─────────────────────────────────────────────
    Tiny hook: trigger in-view class once element
@@ -341,17 +344,17 @@ const Hero = () => {
                 </AnimatePresence>
 
                 <div className="rp-hero__actions" style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
-                    <button className="rp-btn" style={{ 
-                        background: '#2563eb', color: '#fff', fontWeight: 800, 
-                        padding: isMobile ? '12px 24px' : '16px 40px', borderRadius: '50px', fontSize: isMobile ? '0.9rem' : '1.1rem', 
+                    <button className="rp-btn" style={{
+                        background: '#2563eb', color: '#fff', fontWeight: 800,
+                        padding: isMobile ? '12px 24px' : '16px 40px', borderRadius: '50px', fontSize: isMobile ? '0.9rem' : '1.1rem',
                         boxShadow: '0 10px 25px rgba(37,99,235,0.2)',
                     }} onClick={() => navigate('/portal')}>
                         join now →
                     </button>
 
                     <div className="rp-hero__stores" style={{ display: 'flex', alignItems: 'center' }}>
-                        <div className="rp-store-btn" onClick={() => window.open('https://play.google.com/store', '_blank')} style={{ background: '#000', borderRadius: '12px', padding: isMobile ? '8px 16px' : '10px 20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.61 3,21.09 3,20.5M16.81,15.12L18.81,16.27C19.46,16.61 19.81,17.21 19.81,17.81C19.81,18.41 19.46,19.01 18.81,19.35L5.75,26.85C5.25,27.14 4.65,27.14 4.15,26.85L14.89,16.11L16.81,15.12M14.89,7.89L4.15,17.15L5.75,18.15L18.81,10.65C19.46,10.31 19.81,9.71 19.81,9.11C19.81,8.51 19.46,7.91 18.81,7.57L16.81,8.88L14.89,7.89Z"/></svg>
+                        <div className="rp-store-btn" onClick={() => window.open('https://play.google.com/store/apps/details?id=com.rupiksha.services&pcampaignid=web_share', '_blank')} style={{ background: '#000', borderRadius: '12px', padding: isMobile ? '8px 16px' : '10px 20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.61 3,21.09 3,20.5M16.81,15.12L18.81,16.27C19.46,16.61 19.81,17.21 19.81,17.81C19.81,18.41 19.46,19.01 18.81,19.35L5.75,26.85C5.25,27.14 4.65,27.14 4.15,26.85L14.89,16.11L16.81,15.12M14.89,7.89L4.15,17.15L5.75,18.15L18.81,10.65C19.46,10.31 19.81,9.71 19.81,9.11C19.81,8.51 19.46,7.91 18.81,7.57L16.81,8.88L14.89,7.89Z" /></svg>
                             <div className="rp-store-text">
                                 <small style={{ display: 'block', fontSize: '8px', opacity: 0.8 }}>GET IT ON</small>
                                 <b style={{ fontSize: '12px' }}>Google Play</b>
@@ -363,14 +366,14 @@ const Hero = () => {
 
             {!isMobile && (
                 <div className="rp-hero__visuals">
-                    <img 
-                        src={characterImg} 
-                        alt="Fintech" 
+                    <img
+                        src={characterImg}
+                        alt="Fintech"
                         className="rp-hero__char"
                     />
                     <div className="rp-float-widget rp-float-widget--payment">
                         <AnimatePresence mode="wait">
-                            <motion.div 
+                            <motion.div
                                 key={cur}
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -379,6 +382,32 @@ const Hero = () => {
                             >
                                 <h6>{cur === 0 ? "Retailers" : cur === 1 ? "Monthly Volume" : "Agents"}</h6>
                                 <h4>{cur === 0 ? "1000+" : cur === 1 ? "₹200Cr+" : "15,000+"}</h4>
+                            </motion.div>
+                        </AnimatePresence>
+                    </div>
+
+                    <div className="rp-float-widget rp-float-widget--users" style={{ top: '20%', right: '-19%' }}>
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={cur}
+                                initial={{ opacity: 0, x: 10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -10 }}
+                                className="rp-users-card"
+                            >
+                                <div style={{ background: '#ecfdf5', padding: '10px', borderRadius: '12px' }}>
+                                    <span style={{ fontSize: '1.2rem' }}>
+                                        {cur === 0 ? "⚡" : cur === 1 ? "🛡️" : "🛎️"}
+                                    </span>
+                                </div>
+                                <div>
+                                    <b style={{ fontSize: '14px', display: 'block', color: '#0f172a' }}>
+                                        {cur === 0 ? "99.9% Success" : cur === 1 ? "RBI Compliant" : "24/7 Support"}
+                                    </b>
+                                    <p style={{ fontSize: '10px', color: '#64748b', margin: 0 }}>
+                                        {cur === 0 ? "Reliable & Instant" : cur === 1 ? "Bank-grade Security" : "Dedicated Helpdesk"}
+                                    </p>
+                                </div>
                             </motion.div>
                         </AnimatePresence>
                     </div>
@@ -415,7 +444,7 @@ function Services() {
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 1100);
         window.addEventListener('resize', handleResize);
-        
+
         let ticking = false;
         const onScroll = () => {
             if (!ticking) {
@@ -450,24 +479,24 @@ function Services() {
                 <SectionHead tag="Our Services" title="What We Offer" sub="Comprehensive financial solutions for your business" />
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px', marginTop: '40px' }}>
                     {SERVICES.map((s, i) => (
-                        <motion.div 
-                            key={i} 
+                        <motion.div
+                            key={i}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.05 }}
-                            style={{ 
-                                background: s.grad, padding: '32px 24px', borderRadius: '32px', 
+                            style={{
+                                background: s.grad, padding: '32px 24px', borderRadius: '32px',
                                 color: '#fff', boxShadow: `0 20px 40px -10px ${s.glow}`,
                                 position: 'relative', overflow: 'hidden'
                             }}
                         >
                             <div style={{ position: 'relative', zIndex: 2 }}>
-                                <span style={{ 
-                                    fontSize: '10px', fontVariant: 'small-caps', fontWeight: 800, 
-                                    textTransform: 'uppercase', letterSpacing: '2px', 
-                                    background: 'rgba(255,255,255,0.15)', padding: '6px 14px', 
-                                    borderRadius: '50px', border: '1px solid rgba(255,255,255,0.2)' 
+                                <span style={{
+                                    fontSize: '10px', fontVariant: 'small-caps', fontWeight: 800,
+                                    textTransform: 'uppercase', letterSpacing: '2px',
+                                    background: 'rgba(255,255,255,0.15)', padding: '6px 14px',
+                                    borderRadius: '50px', border: '1px solid rgba(255,255,255,0.2)'
                                 }}>{s.tag}</span>
                                 <h3 style={{ fontSize: '1.5rem', fontWeight: 900, marginTop: '20px', marginBottom: '12px', letterSpacing: '-0.5px' }}>{s.label}</h3>
                                 <p style={{ fontSize: '0.9rem', opacity: 0.9, lineHeight: 1.6, marginBottom: '16px' }}>{s.desc}</p>
@@ -597,7 +626,7 @@ function Services() {
                             if (offset > 3 || offset < -1) return null;
                             const isActive = offset === 0;
                             const isPast = offset < 0;
-                            
+
                             let translateY = offset * 25;
                             let translateX = 0;
                             let scale = 1 - Math.abs(offset) * 0.05;
@@ -640,7 +669,7 @@ function Services() {
                                     >
                                         <h4 style={{ fontSize: '2rem', fontWeight: 900, marginBottom: 12 }}>{s.label}</h4>
                                         <p style={{ opacity: 0.9, lineHeight: 1.6, fontSize: '1rem' }}>{s.desc}</p>
-                                        
+
                                         <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '30px' }}>
                                             <motion.div
                                                 style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
@@ -730,15 +759,15 @@ function AdvantageCard({ item, i, progress, count }) {
                 left: '50%',
                 translateX: '-50%',
                 width: 'min(480px, 92vw)', // Responsive width
-                background: '#fff',
+                background: '#ffffff',
                 borderRadius: 32,
                 padding: 'min(45px, 6vw)',
-                boxShadow: '0 30px 60px rgba(0,0,0,0.12)',
+                boxShadow: '0 30px 60px rgba(0,0,0,0.08)',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 textAlign: 'center',
-                border: '1px solid #e2e8f0',
+                border: '1.2px solid #f1f5f9',
                 willChange: 'transform, opacity'
             }}
         >
@@ -776,7 +805,7 @@ function Advantage() {
             id="advantage"
             style={{
                 height: `600vh`,
-                background: '#f1f5f9',
+                background: 'linear-gradient(135deg, #1e3a8a 0%, #18dfe9c7 100%)',
                 position: 'relative',
                 marginTop: 0,
                 marginBottom: 0,
@@ -821,43 +850,44 @@ function Advantage() {
 ══════════════════════════════════════════════ */
 function Partners() {
     const navigate = useNavigate();
+    const { t, language: lang } = useLanguage();
     const [activeTab, setActiveTab] = useState('retailer');
     const [ref, visible] = useInView();
 
     const data = {
         retailer: {
-            title: 'Retailer',
-            desc: 'Use our digital suite of products to upgrade your store and manage your credits, customers and payments better. Offer our assisted financial and digital commerce services to increase your income. Be the trusted banker in your area.',
+            title: t('PARTNER_RETAILER'),
+            desc: t('PARTNER_RETAILER_DESC'),
             highlights: [
-                { icon: '👥', text: 'Join over 15,00,000 active retailers' },
-                { icon: '💰', text: 'Earn more than ₹25,000 per month' },
-                { icon: '🛡️', text: 'No working capital required' }
+                { icon: '👥', text: t('PARTNER_RETAILER_H1') },
+                { icon: '💰', text: t('PARTNER_RETAILER_H2') },
+                { icon: '🛡️', text: t('PARTNER_RETAILER_H3') }
             ],
-            categories: ['Kirana Shop', 'Restaurant', 'Medical Shop', 'Fertilizer Shop', 'Apparel Shop', 'Tailoring Shop', 'Mobile Recharge Centre', 'Insurance Agency', 'Hardware Store', 'Travel Agency and more'],
+            categories: t('PARTNER_RETAILER_CATS').split(','),
             color: '#2563eb',
             image: "https://images.unsplash.com/photo-1580674285054-bed31e145f59?q=80&w=1000&auto=format&fit=crop"
         },
         distributor: {
-            title: 'Distributor',
-            desc: 'Make more out of your distribution business. Onboard your network to offer Rupiksha and earn more than 18% per month on the money invested. No physical stock, staff or physical transfer of goods required. Both you and your retailers make money on every transaction.',
+            title: t('PARTNER_DISTRIBUTOR'),
+            desc: t('PARTNER_DISTRIBUTOR_DESC'),
             highlights: [
-                { icon: '🏢', text: 'Join over 1,00,000 distributors' },
-                { icon: '📈', text: 'Earn more than ₹50,000 per month' },
-                { icon: '🔄', text: 'Zero physical stock required' }
+                { icon: '🏢', text: t('PARTNER_DISTRIBUTOR_H1') },
+                { icon: '📈', text: t('PARTNER_DISTRIBUTOR_H2') },
+                { icon: '🔄', text: t('PARTNER_DISTRIBUTOR_H3') }
             ],
-            categories: ['Telecom', 'Pharma', 'Retail', 'FMCG and many more'],
+            categories: t('PARTNER_DISTRIBUTOR_CATS').split(','),
             color: '#10b981',
-            image: "https://images.unsplash.com/photo-1600880210836-8f8ef9e09b52?q=80&w=1000&auto=format&fit=crop"
+            image: "/photo/distributor_main.jpg"
         },
         individual: {
-            title: 'Individual / SHG',
-            desc: 'Grab the opportunity to run your own business from your home or shop. Become a Rupiksha Digital Pradhan and offer financial services to your area. Home-based businesses can take their stores online and service more customers.',
+            title: t('PARTNER_INDIVIDUAL'),
+            desc: t('PARTNER_INDIVIDUAL_DESC'),
             highlights: [
-                { icon: '🏠', text: 'Run business from comfort of home' },
-                { icon: '💸', text: 'Earn more than ₹15,000 per month' },
-                { icon: '👩‍🏫', text: 'Ideal for Griha Udyog, SHGs, & Teachers' }
+                { icon: '🏠', text: t('PARTNER_INDIVIDUAL_H1') },
+                { icon: '💸', text: t('PARTNER_INDIVIDUAL_H2') },
+                { icon: '👩‍🏫', text: t('PARTNER_INDIVIDUAL_H3') }
             ],
-            categories: ['Griha Udyog Members', 'Self Help Groups', 'Teachers', 'Students', 'Home-based businesses'],
+            categories: t('PARTNER_INDIVIDUAL_CATS').split(','),
             color: '#f59e0b',
             image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1000&auto=format&fit=crop"
         }
@@ -869,27 +899,35 @@ function Partners() {
         <section className="rp-partners" id="partners" ref={ref}>
             <div className="section-container">
                 <div className="partners-header">
-                    <span className="partners-tag">Partnership Opportunities</span>
-                    <h2 className="partners-title-glow">Grow with Rupiksha</h2>
-                    <p className="partners-sub">Choose the role that fits your business goals and start earning today.</p>
+                    <span className="partners-tag">{t('PARTNER_TAG')}</span>
+                    <h2 className="partners-title-glow">{t('PARTNER_TITLE')}</h2>
+                    <p className="partners-sub">{t('PARTNER_SUB')}</p>
                 </div>
 
                 <div className="partners-tabs">
-                    {Object.keys(data).map(key => (
+                    {[
+                        { id: 'retailer', label: t('PARTNER_RETAILER'), emoji: '🏪' },
+                        { id: 'distributor', label: t('PARTNER_DISTRIBUTOR'), emoji: '🏗️' },
+                        { id: 'individual', label: t('PARTNER_INDIVIDUAL'), emoji: '🚀' }
+                    ].map(tab => (
                         <button
-                            key={key}
-                            className={`partner-tab-btn ${activeTab === key ? 'active' : ''}`}
-                            onClick={() => setActiveTab(key)}
-                            style={{ '--color': data[key].color }}
+                            key={tab.id}
+                            className={`partner-tab-btn ${activeTab === tab.id ? 'active' : ''}`}
+                            onClick={() => setActiveTab(tab.id)}
+                            style={{ '--color': data[tab.id].color }}
                         >
-                            {data[key].title}
+                            {tab.emoji} {tab.label}
                         </button>
                     ))}
                 </div>
 
-                <div className={`partner-content-card ${visible ? 'visible' : ''}`}>
+                <div className={`partner-content-card ${visible ? 'visible' : ''}`} style={{ minHeight: activeTab === 'distributor' ? '360px' : '420px' }}>
                     <div className="partner-visual">
-                        <img src={current.image} alt={current.title} className="partner-img" />
+                        {activeTab === 'distributor' ? (
+                            <img src={current.image} alt={current.title} className="partner-img" />
+                        ) : (
+                            <PhotoSlider />
+                        )}
                         <div className="partner-visual-overlay" style={{ background: `linear-gradient(to top, ${current.color}cc, transparent)` }} />
                     </div>
                     <div className="partner-info">
@@ -1064,7 +1102,7 @@ const CSS = `
 .rp-hero-bg__blob--4 { top: 10%; left: 30%; background: #3b82f6; opacity: 0.12; width: 40vw; height: 40vw; }
 
 .rp-hero__content { 
-  flex: 1.2; max-width: 650px; position: relative; z-index: 2; margin-top: -60px; 
+  flex: 1.2; max-width: 650px; position: relative; z-index: 2; margin-top: -30px; 
   display: flex; flex-direction: column; align-items: flex-start; text-align: left;
 }
 .rp-hero__badge { 
@@ -1109,6 +1147,7 @@ const CSS = `
   transform-origin: bottom right;
   margin-right: -8%;
   margin-bottom: -1px; /* Ensure no gap at bottom */
+  transform: translateY(30px);
 }
 
 /* Floating Cards for Monks Pay Style */
@@ -1118,7 +1157,7 @@ const CSS = `
   z-index: 10; border: 1px solid rgba(255, 255, 255, 0.2); 
   animation: floatAnim 4s ease-in-out infinite; 
 }
-.rp-float-widget--payment { bottom: 15%; left: 5%; perspective: 1000px; }
+.rp-float-widget--payment { bottom: 12%; left: 5%; perspective: 1000px; }
 .rp-float-widget--users { top: 35%; right: 0; }
 
 @keyframes floatAnim { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
@@ -1293,7 +1332,7 @@ const CSS = `
 }
 
 .how-node-circle {
-  width: 100px; height: 100px; background: #fff; border: 4px solid #fff;
+  width: 100px; height: 100px; background: #0033ffff; border: 4px solid #fff;
   border-radius: 50%; display: flex; align-items: center; justify-content: center;
   position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: all 0.4s;
   z-index: 5;
@@ -1362,7 +1401,7 @@ const CSS = `
 /* ═══════════════════════════════════════════
    PARTNERS SECTION
  ═══════════════════════════════════════════ */
-.rp-partners { padding: 100px 5%; background: #fff; position: relative; }
+.rp-partners { padding: 60px 5%; background: #fff; position: relative; }
 .partners-header { text-align: center; margin-bottom: 60px; display: flex; flex-direction: column; align-items: center; }
 .partners-tag { 
   display: inline-block; padding: 6px 16px; background: #f0f7ff; border: 1.5px solid #dbeafe; 
@@ -1419,8 +1458,9 @@ const CSS = `
 
 .partner-content-card {
   max-width: 1200px; margin: 0 auto; background: #fff; border: 1px solid #e2e8f0;
-  border-radius: 40px; display: grid; grid-template-columns: 450px 1fr; gap: 0;
+  border-radius: 40px; display: grid; grid-template-columns: 42% 58%; gap: 0;
   box-shadow: 0 40px 80px -20px rgba(0,0,0,0.1); opacity: 0;
+  min-height: 540px; /* Slightly reduced height as requested */
   transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; overflow: hidden;
 }
 .partner-content-card.visible { opacity: 1; transform: translateY(0); }
@@ -1430,13 +1470,13 @@ const CSS = `
 .partner-visual:hover .partner-img { transform: scale(1.05); }
 .partner-visual-overlay { position: absolute; inset: 0; mix-blend-mode: multiply; opacity: 0.3; }
 
-.partner-info { padding: 60px; display: flex; flex-direction: column; justify-content: center; }
-.partner-info h3 { font-size: 2.8rem; font-weight: 800; margin-bottom: 20px; font-family: 'Plus Jakarta Sans', sans-serif; }
-.partner-desc { font-size: 1.1rem; color: #475569; line-height: 1.8; margin-bottom: 24px; }
+.partner-info { padding: 24px 40px; display: flex; flex-direction: column; justify-content: center; }
+.partner-info h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; font-family: 'Plus Jakarta Sans', sans-serif; }
+.partner-desc { font-size: 0.95rem; color: #475569; line-height: 1.6; margin-bottom: 12px; }
 
-.partner-highlights { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 32px; }
+.partner-highlights { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin-bottom: 16px; }
 .highlight-item { 
-  display: flex; align-items: center; gap: 12px; padding: 14px 18px; 
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px; 
   border-radius: 16px; border: 1px solid rgba(0,0,0,0.03);
   transition: transform 0.3s;
 }
@@ -1444,7 +1484,7 @@ const CSS = `
 .highlight-icon { font-size: 1.4rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)); }
 .highlight-text { font-size: 0.9rem; font-weight: 700; color: #1e293b; line-height: 1.3; }
 
-.partner-actions { display: flex; gap: 16px; margin-bottom: 40px; }
+.partner-actions { display: flex; gap: 12px; margin-bottom: 16px; }
 
 .partner-categories-compact h4 { font-size: 0.85rem; font-weight: 800; color: #94a3b8; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 2px; }
 .cat-grid-compact { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -1501,8 +1541,8 @@ const CSS = `
 @keyframes headerHeroScale { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
 .tag-reveal { 
-  display: inline-block; padding: 4px 14px; background: #eff6ff; 
-  border: 1px solid #dbeafe; color: #2563eb; font-size: 11px; font-weight: 800; border-radius: 99px; 
+  display: inline-block; padding: 4px 14px; background: rgba(255,255,255,0.1); 
+  border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 11px; font-weight: 800; border-radius: 99px; 
   text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; 
   opacity: 0; transform: translateY(-20px);
 }
@@ -1511,7 +1551,7 @@ const CSS = `
 }
 
 .typewriter-title {
-  font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 900; color: #0f172a; 
+  font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 900; color: #fff; 
   margin-bottom: 24px; white-space: nowrap; overflow: hidden;
   width: 0; display: inline-block; letter-spacing: -1px;
   border-right: 3px solid transparent;
