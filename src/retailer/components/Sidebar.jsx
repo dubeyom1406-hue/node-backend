@@ -110,26 +110,26 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                         }
                     }}
                     className={`flex items-center ${isHovered ? 'justify-between' : 'justify-center'} px-3 py-2.5 my-1.5 cursor-pointer group transition-all duration-300 rounded-xl relative
-                    ${isActive ? 'text-slate-900' : 'text-slate-500 hover:text-slate-900'}`}
+                    ${isActive ? 'text-white' : 'text-white/60 hover:text-white'}`}
                 >
                     {/* Floating Background */}
                     {isActive && (
                         <motion.div
                             layoutId="active-pill"
-                            className="absolute inset-0 bg-slate-100/80 backdrop-blur-xl border border-slate-200/60 shadow-[0_4px_12px_rgba(0,0,0,0.08)] rounded-xl z-0"
+                            className="absolute inset-0 bg-white/10 backdrop-blur-xl border border-white/10 shadow-lg rounded-xl z-0"
                             transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                         />
                     )}
 
                     <div className="flex items-center space-x-3 relative z-10 w-full">
-                        <div className={`transition-all duration-300 ${isActive ? 'scale-110' : 'text-slate-400 group-hover:text-slate-900'}`} style={{ color: isActive ? 'var(--primary-color)' : undefined }}>
+                        <div className={`transition-all duration-300 ${isActive ? 'scale-110' : 'text-white/60 group-hover:text-white'}`} style={{ color: isActive ? '#fff' : undefined }}>
                             <item.icon size={20} strokeWidth={isActive ? 2.5 : 2} />
                         </div>
                         {isHovered && (
                             <motion.span
                                 initial={{ opacity: 0, x: -5 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                className={`font-bold text-[13.5px] tracking-tight ${isActive ? 'text-slate-950' : ''}`}
+                                className={`font-bold text-[13.5px] tracking-tight ${isActive ? 'text-white' : 'text-white/70'}`}
                             >
                                 {item.label}
                             </motion.span>
@@ -139,7 +139,7 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                         <div className="relative z-10">
                             {item.hasSubmenu ? (
                                 <div className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`}>
-                                    <ChevronDown size={14} className={`${isActive ? 'text-slate-950' : 'text-slate-300'}`} />
+                                    <ChevronDown size={14} className={`${isActive ? 'text-white' : 'text-white/40'}`} />
                                 </div>
                             ) : isActive && !item.hasSubmenu && (
                                 <motion.div 
@@ -219,12 +219,12 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             className={`fixed lg:relative flex-shrink-0 border-r border-slate-100 flex flex-col h-full font-['Inter',sans-serif] z-50 lg:z-20 transition-colors duration-500
                 ${showMobileSidebar ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
-            style={{ backgroundColor: 'var(--primary-color-5)' }}
+            style={{ backgroundColor: 'var(--primary-color)' }}
         >
             {/* Logo Area */}
             <div className={`p-6 flex items-center ${isHovered ? 'justify-start' : 'justify-center'} h-20`}>
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 flex-shrink-0 flex items-center justify-center overflow-hidden">
+                    <div className="h-10 w-10 flex-shrink-0 flex items-center justify-center overflow-hidden brightness-0 invert opacity-80 hover:opacity-100 transition-all">
                         <img src={mainLogo} alt="RUPIKSHA" className="h-full w-auto object-contain" />
                     </div>
                     {/* Brand Name Removed as per request */}

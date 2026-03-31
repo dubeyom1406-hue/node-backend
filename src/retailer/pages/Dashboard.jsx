@@ -292,7 +292,7 @@ const RetailerDashboard = () => {
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
                     className="border border-slate-100 p-8 lg:p-12 rounded-[48px] shadow-sm relative z-10 overflow-hidden transition-colors duration-500"
-                    style={{ backgroundColor: 'var(--primary-color-5)' }}
+                    style={{ backgroundColor: 'var(--primary-color-10)' }}
                 >
                     <div className="flex justify-between items-center mb-6">
                         <div className="space-y-1 -mt-4 -ml-2">
@@ -392,7 +392,7 @@ const RetailerDashboard = () => {
                     <div className="lg:col-span-8 space-y-10">
 
                         {/* Transaction Trend Chart */}
-                        <div className="border border-slate-100 p-8 rounded-[48px] shadow-sm transition-colors duration-500" style={{ backgroundColor: 'var(--primary-color-5)' }}>
+                        <div className="border border-slate-100 p-8 rounded-[48px] shadow-sm transition-colors duration-500" style={{ backgroundColor: 'var(--primary-color-10)' }}>
                             <div className="flex justify-between items-center mb-8">
                                 <div className="space-y-1">
                                     <h3 className="text-xl font-black tracking-tight text-slate-800">Volume Trend</h3>
@@ -516,7 +516,7 @@ const RetailerDashboard = () => {
 
                                 <div className="grid grid-cols-1 gap-4 mb-8">
                                     {/* Stat 1: Count */}
-                                    <div className="p-5 rounded-[28px] border border-slate-100 border-dashed transition-colors duration-500" style={{ backgroundColor: 'var(--primary-color-5)' }}>
+                                    <div className="p-5 rounded-[28px] border border-slate-100 border-dashed transition-colors duration-500" style={{ backgroundColor: 'var(--primary-color-20)' }}>
                                         <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Total {selectedPeriod} Count</p>
                                         <div className="flex items-center justify-between">
                                             <h4 className="text-2xl font-black tracking-tighter text-slate-800">{stats.totalCount.toLocaleString()}</h4>

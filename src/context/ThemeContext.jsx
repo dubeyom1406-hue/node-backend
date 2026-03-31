@@ -29,6 +29,8 @@ export const ThemeProvider = ({ children }) => {
             return `rgba(${r}, ${g}, ${b}, ${alpha})`;
         };
 
+        document.documentElement.style.setProperty('--primary-color-dark', hexToRgba(primaryColor, 0.9));
+        document.documentElement.style.setProperty('--primary-color-80', hexToRgba(primaryColor, 0.8));
         document.documentElement.style.setProperty('--primary-color-light', hexToRgba(primaryColor, 0.15));
         document.documentElement.style.setProperty('--primary-color-20', hexToRgba(primaryColor, 0.2));
         document.documentElement.style.setProperty('--primary-color-10', hexToRgba(primaryColor, 0.1));
