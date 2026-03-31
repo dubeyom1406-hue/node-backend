@@ -242,7 +242,7 @@ const RetailerDashboard = () => {
                 <motion.div 
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 -mt-2"
+                    className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mt-4"
                 >
                         {/* LEFT GREETING */}
                         <div className="space-y-0.5">
@@ -260,7 +260,7 @@ const RetailerDashboard = () => {
                     <motion.div 
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        className="bg-white border-y border-slate-100 py-3 -mx-2 md:-mx-8 lg:-mx-16 flex items-center gap-4 px-10"
+                        className="bg-white border-y border-slate-100 py-3 flex items-center gap-4 px-10"
                     >
                         <div className="bg-blue-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest whitespace-nowrap">
                             Bulletin
@@ -281,7 +281,7 @@ const RetailerDashboard = () => {
                 <motion.div 
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="-mx-2 md:-mx-8 lg:-mx-16"
+                    className=""
                 >
                     <NewsCarousel banners={appData?.promotions?.banners} />
                 </motion.div>
@@ -291,7 +291,7 @@ const RetailerDashboard = () => {
                     layout
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="bg-white border border-slate-100 p-8 lg:p-8 -mx-2 md:-mx-8 lg:-mx-16 rounded-[48px] shadow-sm relative z-10 overflow-hidden"
+                    className="bg-white border border-slate-100 p-8 lg:p-12 rounded-[48px] shadow-sm relative z-10 overflow-hidden"
                 >
                     <div className="flex justify-between items-center mb-6">
                         <div className="space-y-1 -mt-4 -ml-2">
@@ -384,7 +384,7 @@ const RetailerDashboard = () => {
                 </motion.div>
 
                 {/* Main Content Grid: Restored full-width alignment */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 -mx-2 md:-mx-8 lg:-mx-16">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                     
                     {/* LEFT PANEL: Trends & Recent Activity */}
                     <div className="lg:col-span-8 space-y-10">

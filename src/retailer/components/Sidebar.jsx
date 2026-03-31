@@ -7,7 +7,7 @@ import {
     Building2, Handshake, Home, Coins, Shield
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import mainLogo from '../../assets/rupiksha_new_logo.png';
+import mainLogo from '../../assets/rupiksha_logo.png';
 import { dataService } from '../../services/dataService';
 const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
     const { t } = useLanguage();
@@ -220,14 +220,13 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
             className={`fixed lg:relative bg-white flex-shrink-0 border-r border-slate-100 flex flex-col h-full font-['Inter',sans-serif] z-50 lg:z-20 overflow-hidden
                 ${showMobileSidebar ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
         >
-            <div className={`p-4 flex items-center ${isHovered ? 'justify-start' : 'justify-center'} border-b border-slate-50 h-20`}>
-                <div className="flex items-center gap-2 overflow-hidden">
-                    <motion.img 
-                        src={mainLogo} 
-                        alt="RUPIKSHA" 
-                        animate={{ width: isHovered ? 140 : 40 }}
-                        className="h-10 object-contain" 
-                    />
+            {/* Logo Area */}
+            <div className={`p-6 flex items-center ${isHovered ? 'justify-start' : 'justify-center'} h-20`}>
+                <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 flex-shrink-0 flex items-center justify-center overflow-hidden">
+                        <img src={mainLogo} alt="RUPIKSHA" className="h-full w-auto object-contain" />
+                    </div>
+                    {/* Brand Name Removed as per request */}
                 </div>
             </div>
 
