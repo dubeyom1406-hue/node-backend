@@ -37,6 +37,17 @@ const INITIAL_MOCK_DATA = {
             email: 'sdist@example.com', 
             password: 'pass',
             partyCode: 'SDIST001' 
+        },
+        { 
+            id: 4, 
+            name: 'Mock Retailer', 
+            username: '9931426338', 
+            mobile: '9931426338', 
+            role: 'RETAILER', 
+            status: 'Approved', 
+            balance: '500.00', 
+            email: 'retailer@rupiksha.in',
+            password: 'Ret@123'
         }
     ],
     loans: [],
