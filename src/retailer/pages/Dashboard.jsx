@@ -245,7 +245,7 @@ const RetailerDashboard = () => {
                     className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 -mt-2"
                 >
                     {/* LEFT GREETING */}
-                    <div className="space-y-0.5 -ml-16">
+                    <div className="space-y-0.5">
                         <div className="flex items-center gap-3 mb-1">
                             <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
                             <span className="text-[10px] font-black text-blue-600 uppercase tracking-[0.4em]">Personal Dashboard</span>
@@ -256,7 +256,7 @@ const RetailerDashboard = () => {
                     </div>
 
                     {/* RIGHT WALLET CLUSTER */}
-                    <div className="relative lg:-mr-16">
+                    <div className="relative">
                         <div className="hidden lg:flex items-center bg-white border border-slate-100 p-1.5 rounded-[28px] shadow-xl shadow-slate-200/50">
                             {[
                                 { id: 'main', label: 'Main', balance: balance, color: 'blue', icon: <Wallet size={12} />, actions: ['Add Funds', 'Usage', 'History'] },

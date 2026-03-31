@@ -4,7 +4,7 @@ import {
     LayoutGrid, Plane, Smartphone, HandCoins, FileText,
     Fingerprint, Calculator, Zap, Lightbulb, Landmark, Headset,
     FileChartColumn, CreditCard, ScanFace, ChevronRight, ChevronDown,
-    Building2, Handshake, Home, Coins, Shield, Palette
+    Building2, Handshake, Home, Coins, Shield
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import mainLogo from '../../assets/rupiksha_logo.png';
@@ -13,13 +13,7 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
     const { t } = useLanguage();
     const [expandedItems, setExpandedItems] = useState({ banking: false, travel: false, reports: false });
     const [isHovered, setIsHovered] = useState(false);
-    const [themeColor, setThemeColor] = useState(localStorage.getItem('sidebar-theme') || '#0be9f1');
     const [appData, setAppData] = useState(dataService.getData());
-
-    useEffect(() => {
-        document.documentElement.style.setProperty('--sidebar-bg-color', themeColor);
-        localStorage.setItem('sidebar-theme', themeColor);
-    }, [themeColor]);
 
     useEffect(() => {
         const updateData = () => setAppData(dataService.getData());
@@ -105,10 +99,9 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
         const isExpanded = expandedItems[item.id];
 
         return (
-            <div>
+            <div className="px-3">
                 <motion.div
-                    whileHover={{ x: isHovered ? 4 : 0 }}
-                    whileTap={{ scale: 0.99 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => {
                         if (item.hasSubmenu) {
                             toggleExpand(item.id);
@@ -116,39 +109,46 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                             onClick();
                         }
                     }}
-                    className={`flex items-center ${isHovered ? 'justify-between' : 'justify-center'} px-6 py-3 cursor-pointer group transition-all duration-200 border-l-[3px]
-                    ${isActive ? 'bg-yellow-400 border-black' : 'border-transparent hover:bg-white/10'}`}
+                    className={`flex items-center ${isHovered ? 'justify-between' : 'justify-center'} px-3 py-2.5 my-1.5 cursor-pointer group transition-all duration-300 rounded-xl relative
+                    ${isActive ? 'text-slate-900' : 'text-slate-500 hover:text-slate-900'}`}
                 >
-                    <div className="flex items-center space-x-3">
-                        <div className={`transition-colors flex flex-col items-center ${isActive ? 'text-[#4a148c]' : 'text-black group-hover:text-slate-700'}`}>
-                            <item.icon size={24} strokeWidth={1.5} />
-                            {item.id === 'banking' && isHovered && (
-                                <div className="h-0.5 w-4 bg-current rounded-full mt-0.5 opacity-50"></div>
-                            )}
+                    {/* Floating Background */}
+                    {isActive && (
+                        <motion.div
+                            layoutId="active-pill"
+                            className="absolute inset-0 bg-slate-100/80 backdrop-blur-xl border border-slate-200/60 shadow-[0_4px_12px_rgba(0,0,0,0.08)] rounded-xl z-0"
+                            transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                        />
+                    )}
+
+                    <div className="flex items-center space-x-3 relative z-10 w-full">
+                        <div className={`transition-all duration-300 ${isActive ? 'text-blue-600 scale-110' : 'text-slate-400 group-hover:text-slate-900'}`}>
+                            <item.icon size={20} strokeWidth={isActive ? 2.5 : 2} />
                         </div>
                         {isHovered && (
                             <motion.span
-                                initial={{ opacity: 0, x: -10 }}
+                                initial={{ opacity: 0, x: -5 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                className={`font-semibold text-sm tracking-wide ${isActive ? 'text-slate-900 border-b-2 border-[#4a148c]' : 'text-black group-hover:text-slate-800'}`}
-                                style={{ textShadow: '0 1px 1px rgba(0,0,0,0.05)' }}
+                                className={`font-bold text-[13.5px] tracking-tight ${isActive ? 'text-slate-950' : ''}`}
                             >
                                 {item.label}
                             </motion.span>
                         )}
                     </div>
                     {isHovered && (
-                        item.hasSubmenu ? (
-                            <div className={`transition-transform duration-300 ${isExpanded ? 'rotate-0' : '-rotate-0'}`}>
-                                <ChevronRight size={18} className={`${isExpanded ? 'text-blue-900' : 'text-slate-300'}`} />
-                            </div>
-                        ) : (
-                            item.type !== 'doc' && (
-                                <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <ChevronRight size={14} className="text-slate-300" />
+                        <div className="relative z-10">
+                            {item.hasSubmenu ? (
+                                <div className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`}>
+                                    <ChevronDown size={14} className={`${isActive ? 'text-slate-950' : 'text-slate-300'}`} />
                                 </div>
-                            )
-                        )
+                            ) : isActive && !item.hasSubmenu && (
+                                <motion.div 
+                                    initial={{ scale: 0, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"
+                                />
+                            )}
+                        </div>
                     )}
                 </motion.div>
 
@@ -159,33 +159,39 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: 'auto', opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.3, ease: 'easeInOut' }}
-                            className="bg-white overflow-hidden"
+                            className="ml-9 border-l border-slate-100 overflow-hidden"
                         >
-                            {item.subItems.map((sub, idx) => (
-                                <motion.div
-                                    key={idx}
-                                    whileHover={{ x: 6, color: '#1e3a8a' }}
-                                    onClick={() => {
-                                        // If this is the travel menu, keep dashboard activeTab as 'travel' and emit a selection event
-                                        if (item.id === 'travel') {
-                                            setActiveTab('travel');
-                                            try { window.dispatchEvent(new CustomEvent('travelSelect', { detail: sub.id })); } catch (e) { /* ignore */ }
-                                        }
-                                        else if (item.id === 'utility') {
-                                            setActiveTab('utility');
-                                            try { window.dispatchEvent(new CustomEvent('utilitySelect', { detail: sub.id })); } catch (e) { /* ignore */ }
-                                        }
-                                        else {
-                                            setActiveTab(sub.id);
-                                        }
-                                    }}
-                                    className={`pl-10 py-2.5 text-[13px] font-bold cursor-pointer hover:bg-slate-50 transition-all text-left
-                                    ${activeTab === sub.id || (item.id === 'travel' && activeTab === 'travel') || (item.id === 'utility' && activeTab === 'utility') ? 'text-blue-900 bg-blue-50/50' : 'text-black'}`}
-                                >
-                                    {sub.label}
-                                </motion.div>
-                            ))}
+                            {item.subItems.map((sub, idx) => {
+                                const isSubActive = activeTab === sub.id;
+                                return (
+                                    <div
+                                        key={idx}
+                                        onClick={() => {
+                                            if (item.id === 'travel') {
+                                                setActiveTab('travel');
+                                                try { window.dispatchEvent(new CustomEvent('travelSelect', { detail: sub.id })); } catch (e) { }
+                                            }
+                                            else if (item.id === 'utility') {
+                                                setActiveTab('utility');
+                                                try { window.dispatchEvent(new CustomEvent('utilitySelect', { detail: sub.id })); } catch (e) { }
+                                            }
+                                            else {
+                                                setActiveTab(sub.id);
+                                            }
+                                        }}
+                                        className={`pl-4 py-2 text-[12.5px] font-bold cursor-pointer transition-all rounded-lg my-1 relative
+                                        ${isSubActive ? 'text-blue-600' : 'text-slate-400 hover:text-slate-700 hover:bg-slate-50/50'}`}
+                                    >
+                                        {isSubActive && (
+                                            <motion.div 
+                                                layoutId="active-sub-pill"
+                                                className="absolute inset-0 bg-blue-50/50 rounded-lg -z-10"
+                                            />
+                                        )}
+                                        {sub.label}
+                                    </div>
+                                );
+                            })}
                         </motion.div>
                     )}
                 </AnimatePresence>
@@ -204,67 +210,56 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
     return (
         <motion.div
             onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => {
-                setIsHovered(false);
-            }}
+            onMouseLeave={() => setIsHovered(false)}
             initial={false}
             animate={{
-                width: isHovered ? 288 : 88,
-                x: typeof window !== 'undefined' && window.innerWidth < 1024 ? (showMobileSidebar ? 0 : -288) : 0
+                width: isHovered ? 260 : 88,
+                x: typeof window !== 'undefined' && window.innerWidth < 1024 ? (showMobileSidebar ? 0 : -260) : 0
             }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className={`fixed lg:relative bg-[var(--sidebar-bg-color)] flex-shrink-0 border-r border-slate-200 flex flex-col h-full font-['Inter',sans-serif] shadow-xl z-50 lg:z-20 overflow-hidden
+            className={`fixed lg:relative bg-white flex-shrink-0 border-r border-slate-100 flex flex-col h-full font-['Inter',sans-serif] z-50 lg:z-20 overflow-hidden
                 ${showMobileSidebar ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
-            style={{
-                width: typeof window !== 'undefined' && window.innerWidth < 1024 ? 288 : undefined
-            }}
         >
             {/* Logo Area */}
-            <div className={`p-6 flex items-center ${isHovered ? 'justify-center' : 'justify-center'} border-b border-slate-100 bg-gradient-to-b from-white to-slate-50 h-24 overflow-hidden`}>
-                <motion.img
-                    animate={{ scale: 0.6 }}
-                    src={mainLogo}
-                    alt="RUPIKSHA"
-                    className="h-12 object-contain drop-shadow-md"
-                />
+            <div className={`p-6 flex items-center ${isHovered ? 'justify-start' : 'justify-center'} h-20`}>
+                <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 flex-shrink-0 flex items-center justify-center overflow-hidden">
+                        <img src={mainLogo} alt="RUPIKSHA" className="h-full w-auto object-contain" />
+                    </div>
+                    {isHovered && (
+                        <motion.span
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="font-bold text-slate-900 text-lg tracking-tight"
+                        >
+                            RuPiKsha
+                        </motion.span>
+                    )}
+                </div>
             </div>
 
-            <div className="flex-1 py-4 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 hover:scrollbar-thumb-slate-300">
-                {/* Main Navigation */}
-                <div className="mb-6 space-y-1">
+            <div className="flex-1 overflow-y-auto py-2 scrollbar-none">
+                {/* Main section */}
+                <div className="mb-6">
                     <MenuItem
-                        item={{ id: 'dashboard', label: 'My Dashboard', icon: LayoutGrid, type: 'main' }}
+                        item={{ id: 'dashboard', label: 'Dashboard', icon: LayoutGrid }}
                         isActive={activeTab === 'dashboard'}
                         onClick={() => setActiveTab('dashboard')}
                     />
                     <MenuItem
-                        item={{ id: 'all_services', label: 'All Services', icon: Smartphone, type: 'main' }}
+                        item={{ id: 'all_services', label: 'All Services', icon: Smartphone }}
                         isActive={activeTab === 'all_services'}
                         onClick={() => setActiveTab('all_services')}
                     />
                 </div>
 
-                {/* Services Header */}
-                <div className="px-6 py-2 flex items-center mb-2 overflow-hidden h-8">
-                    {isHovered ? (
-                        <>
-                            <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent flex-1"></div>
-                            <motion.h3
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className="text-slate-400 font-extrabold text-[10px] uppercase tracking-widest px-2 whitespace-nowrap"
-                            >
-                                Services
-                            </motion.h3>
-                            <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent flex-1"></div>
-                        </>
-                    ) : (
-                        <div className="w-full h-px bg-slate-100"></div>
-                    )}
-                </div>
-
-                {/* Service List */}
-                <div className="space-y-1 mb-6">
+                {/* Section: TRADING -> SERVICES */}
+                {isHovered && (
+                    <div className="px-6 py-3">
+                        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Services</span>
+                    </div>
+                )}
+                <div className="mb-6">
                     {serviceItems.map((item) => (
                         <MenuItem
                             key={item.id}
@@ -275,27 +270,13 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                     ))}
                 </div>
 
-                {/* Business Hub Header */}
-                <div className="px-6 py-2 flex items-center mb-2 overflow-hidden h-8">
-                    {isHovered ? (
-                        <>
-                            <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent flex-1"></div>
-                            <motion.h3
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className="text-slate-400 font-extrabold text-[10px] uppercase tracking-widest px-2 whitespace-nowrap"
-                            >
-                                Business Hub
-                            </motion.h3>
-                            <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent flex-1"></div>
-                        </>
-                    ) : (
-                        <div className="w-full h-px bg-slate-100"></div>
-                    )}
-                </div>
-
-                {/* Business List */}
-                <div className="space-y-1 mb-6">
+                {/* Section: PREFERENCE -> BUSINESS */}
+                {isHovered && (
+                    <div className="px-6 py-3">
+                        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Business Hub</span>
+                    </div>
+                )}
+                <div className="mb-6">
                     {businessItems.map((item) => (
                         <MenuItem
                             key={item.id}
@@ -305,28 +286,9 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                         />
                     ))}
                 </div>
-
-                {/* EKYC Header */}
-                <div className="px-6 py-2 flex items-center mb-2 overflow-hidden h-8">
-                    {isHovered ? (
-                        <>
-                            <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent flex-1"></div>
-                            <motion.h3
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className="text-slate-400 font-extrabold text-[10px] uppercase tracking-widest px-2 whitespace-nowrap"
-                            >
-                                EKYC & Utilities
-                            </motion.h3>
-                            <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent flex-1"></div>
-                        </>
-                    ) : (
-                        <div className="w-full h-px bg-slate-100"></div>
-                    )}
-                </div>
-
-                {/* EKYC List */}
-                <div className="space-y-1 pb-8">
+                
+                {/* Support section */}
+                <div className="mb-6">
                     {ekycItems.map((item) => (
                         <MenuItem
                             key={item.id}
@@ -336,58 +298,54 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                         />
                     ))}
                 </div>
-            </div>
-
-            {/* User Profile Summary */}
-            <div className="p-4 border-t border-slate-100 bg-slate-50/50">
-                <div className={`flex items-center ${isHovered ? 'space-x-3 px-2' : 'justify-center'} py-2`}>
-                    <div className="relative">
-                        <div className="w-10 h-10 rounded-full border-2 border-white shadow-sm overflow-hidden bg-white flex items-center justify-center">
-                            {currentUser?.profilePhoto ? (
-                                <img src={currentUser.profilePhoto} alt="User" className="w-full h-full object-cover" />
-                            ) : (
-                                <span className="text-[10px] font-black text-blue-600 uppercase">{getInitials()}</span>
-                            )}
-                        </div>
-                        <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
-                    </div>
-                    {isHovered && (
-                        <motion.div
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            className="flex flex-col overflow-hidden"
-                        >
-                            <span className="text-[11px] font-black text-slate-800 uppercase truncate">
-                                {currentUser?.businessName || currentUser?.mobile || 'User'}
-                            </span>
-                            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
-                                Online
-                            </span>
-                        </motion.div>
-                    )}
-                </div>
+                
+                {/* CTA Card at bottom */}
                 {isHovered && (
-                    <div className="mt-4 px-2 space-y-2">
-                        <div className="bg-black/5 rounded-xl p-3 flex items-center justify-between border border-black/5 hover:border-black/10 transition-colors">
-                            <span className="text-[9px] font-black text-black/60 uppercase tracking-widest flex items-center gap-1.5">
-                                <Palette size={12} /> Theme
-                            </span>
-                            <input 
-                                type="color" 
-                                value={themeColor} 
-                                onChange={(e) => setThemeColor(e.target.value)}
-                                className="w-5 h-5 rounded-md cursor-pointer border-none bg-transparent"
-                            />
+                    <div className="px-4 py-2 mt-auto">
+                        <div className="bg-emerald-600 rounded-2xl p-4 text-white relative overflow-hidden group">
+                           {/* BG Decoration */}
+                           <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-emerald-500 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500" />
+                           <div className="absolute -left-4 -top-4 w-16 h-16 bg-emerald-400/20 rounded-full blur-xl" />
+                           
+                           <h4 className="font-bold text-sm mb-1.5 relative z-10">Maximize Profits</h4>
+                           <p className="text-[10px] text-emerald-50 mb-4 leading-relaxed relative z-10">Get real-time commission alerts and payout signals directly.</p>
+                           
+                           <button className="w-full bg-white text-emerald-600 font-bold text-[11px] py-2 rounded-xl shadow-lg shadow-emerald-900/10 hover:bg-emerald-50 transition-colors relative z-10">
+                               Notify Me
+                           </button>
+                           
+                           {/* Coins Illustration via CSS */}
+                           <div className="absolute right-2 bottom-6 opacity-30 pointer-events-none">
+                               <div className="relative w-12 h-12">
+                                   <div className="absolute top-0 right-0 w-8 h-8 rounded-full border-2 border-white/50" />
+                                   <div className="absolute bottom-0 left-0 w-6 h-6 rounded-full border-2 border-white/30" />
+                               </div>
+                           </div>
                         </div>
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="text-[10px] text-black/30 text-center font-bold uppercase tracking-widest pt-1"
-                        >
-                            v2.1.0 RUPIKSHA
-                        </motion.div>
                     </div>
                 )}
+            </div>
+
+            {/* Profile area - minimal like Nexus */}
+            <div className="p-4 border-t border-slate-50">
+                <div className={`flex items-center ${isHovered ? 'justify-between px-2' : 'justify-center'} py-1.5`}>
+                    <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100 overflow-hidden">
+                            {currentUser?.profilePhoto ? (
+                                <img src={currentUser.profilePhoto} alt="U" className="w-full h-full object-cover" />
+                            ) : (
+                                <span className="text-[10px] font-bold text-slate-400">{getInitials()}</span>
+                            )}
+                        </div>
+                        {isHovered && (
+                            <div className="flex flex-col">
+                                <span className="text-xs font-bold text-slate-800 line-clamp-1">{currentUser?.businessName || 'Merchant'}</span>
+                                <span className="text-[10px] text-slate-400 font-medium">Retailer Account</span>
+                            </div>
+                        )}
+                    </div>
+                    {isHovered && <ChevronRight size={14} className="text-slate-300" />}
+                </div>
             </div>
         </motion.div>
     );

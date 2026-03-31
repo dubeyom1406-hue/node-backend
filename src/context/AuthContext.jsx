@@ -50,8 +50,8 @@ export function AuthProvider({ children }) {
           if (elapsed >= LOGOUT_TIMEOUT) {
             logout();
           } else if (elapsed >= LOCK_TIMEOUT) {
-            // No lock for admin/employee roles
-            const isExempt = ['ADMIN', 'DISTRIBUTOR', 'SUPER_DISTRIBUTOR', 'SUPERADMIN', 'NATIONAL_HEADER', 'STATE_HEADER', 'REGIONAL_HEADER', 'EMPLOYEE'].includes(parsedUser.role);
+            // No lock for admin/employee roles and Retailers
+            const isExempt = ['ADMIN', 'DISTRIBUTOR', 'SUPER_DISTRIBUTOR', 'SUPERADMIN', 'NATIONAL_HEADER', 'STATE_HEADER', 'REGIONAL_HEADER', 'EMPLOYEE', 'RETAILER'].includes(parsedUser.role);
             if (!isExempt) {
               setIsLocked(true);
             }
@@ -118,8 +118,8 @@ export function AuthProvider({ children }) {
       if (diff >= LOGOUT_TIMEOUT) {
         logout();
       } else if (diff >= LOCK_TIMEOUT && !isLocked) {
-        // No auto-lock for admin/employee roles
-        const isExempt = ['ADMIN', 'DISTRIBUTOR', 'SUPER_DISTRIBUTOR', 'SUPERADMIN', 'NATIONAL_HEADER', 'STATE_HEADER', 'REGIONAL_HEADER', 'EMPLOYEE'].includes(user.role);
+        // No auto-lock for admin/employee roles and Retailers
+        const isExempt = ['ADMIN', 'DISTRIBUTOR', 'SUPER_DISTRIBUTOR', 'SUPERADMIN', 'NATIONAL_HEADER', 'STATE_HEADER', 'REGIONAL_HEADER', 'EMPLOYEE', 'RETAILER'].includes(user.role);
         if (!isExempt) {
           setIsLocked(true);
         }
@@ -141,8 +141,8 @@ export function AuthProvider({ children }) {
         setUser(res.user);
         setPermissions(res.user.permissions || []);
 
-        // No lock screen for admin/employee roles
-        const isExempt = ['ADMIN', 'DISTRIBUTOR', 'SUPER_DISTRIBUTOR', 'SUPERADMIN', 'NATIONAL_HEADER', 'STATE_HEADER', 'REGIONAL_HEADER', 'EMPLOYEE'].includes(res.user.role);
+        // No lock screen for admin/employee roles and Retailers
+        const isExempt = ['ADMIN', 'DISTRIBUTOR', 'SUPER_DISTRIBUTOR', 'SUPERADMIN', 'NATIONAL_HEADER', 'STATE_HEADER', 'REGIONAL_HEADER', 'EMPLOYEE', 'RETAILER'].includes(res.user.role);
         setIsLocked(!isExempt);
 
         localStorage.setItem("last_activity", Date.now().toString());

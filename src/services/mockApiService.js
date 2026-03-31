@@ -55,12 +55,26 @@ const INITIAL_MOCK_DATA = {
 };
 
 const getMockData = () => {
-    const data = localStorage.getItem(MOCK_DATA_KEY);
-    if (!data) {
+    const stored = localStorage.getItem(MOCK_DATA_KEY);
+    if (!stored) {
         localStorage.setItem(MOCK_DATA_KEY, JSON.stringify(INITIAL_MOCK_DATA));
         return INITIAL_MOCK_DATA;
     }
-    return JSON.parse(data);
+    
+    // Auto-sync missing users from INITIAL_MOCK_DATA into localStorage
+    const data = JSON.parse(stored);
+    let updated = false;
+    INITIAL_MOCK_DATA.users.forEach(initUser => {
+        if (!data.users.find(u => u.username === initUser.username)) {
+            data.users.push(initUser);
+            updated = true;
+        }
+    });
+
+    if (updated) {
+        saveMockData(data);
+    }
+    return data;
 };
 
 const saveMockData = (data) => {
