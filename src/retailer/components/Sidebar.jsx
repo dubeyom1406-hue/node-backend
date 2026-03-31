@@ -249,7 +249,7 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                 {/* Section: TRADING -> SERVICES */}
                 {isHovered && (
                     <div className="px-6 py-3">
-                        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Services</span>
+                        <span className="text-[11px] font-black text-white/40 uppercase tracking-widest">Services</span>
                     </div>
                 )}
                 <div className="mb-6">
@@ -266,7 +266,7 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                 {/* Section: PREFERENCE -> BUSINESS */}
                 {isHovered && (
                     <div className="px-6 py-3">
-                        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Business Hub</span>
+                        <span className="text-[11px] font-black text-white/40 uppercase tracking-widest">Business Hub</span>
                     </div>
                 )}
                 <div className="mb-6">
