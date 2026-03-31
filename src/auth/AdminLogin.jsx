@@ -350,7 +350,7 @@ const AdminLogin = () => {
 
             <main className="flex-1 flex flex-col md:flex-row bg-white">
                 {/* Left: Login Form */}
-                <div className="w-full md:w-[45%] lg:w-[42%] p-8 md:p-10 flex flex-col items-center justify-center bg-amber-400 border-r border-amber-500/20 shadow-2xl relative z-10 h-full overflow-y-auto">
+                <div className="w-full md:w-[45%] lg:w-[42%] p-8 md:p-10 flex flex-col items-center justify-center bg-yellow-50 border-r border-yellow-100 shadow-2xl relative z-10 h-full overflow-y-auto">
                     <div className="w-full max-w-[420px] space-y-6">
                         <div className="text-center space-y-1">
                             <h2 className="text-3xl md:text-4xl font-black tracking-tighter italic" style={{ color: brandColor }}>
