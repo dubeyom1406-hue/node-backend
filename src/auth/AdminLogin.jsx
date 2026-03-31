@@ -5,6 +5,7 @@ import {
     Eye, EyeOff, RefreshCcw, ArrowRight, ShieldCheck,
     Lock, User, Mail, KeyRound, CheckCircle2, AlertCircle, Loader2, ChevronLeft, Check
 } from 'lucide-react';
+
 import logo from '../assets/rupiksha_logo.png';
 import { dataService, BACKEND_URL } from '../services/dataService';
 import { useAuth } from '../context/AuthContext';
@@ -307,14 +308,8 @@ const AdminLogin = () => {
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col font-['Montserrat',sans-serif]">
             <header className="bg-white px-6 md:px-12 py-3 flex items-center justify-between shadow-sm border-b border-slate-100 sticky top-0 z-50">
-                <div className="flex items-center gap-4 cursor-pointer group" onClick={() => navigate('/login')}>
-                    <div className="relative">
-                        <img src={logo} alt="RUPIKSHA" style={{ height: '40px', width: 'auto' }} className="object-contain transition-transform group-hover:scale-105" />
-                    </div>
-                    <div className="hidden sm:flex flex-col">
-                        <span className="text-[14px] font-black text-slate-800 leading-tight tracking-tight">RUPIKSHA</span>
-                        <span className="text-[8px] font-bold text-indigo-500 uppercase tracking-widest">Making Life Simple</span>
-                    </div>
+                <div className="flex items-center gap-4 cursor-pointer" onClick={() => navigate('/login')}>
+                    <img src={logo} alt="RUPIKSHA" style={{ height: '40px', width: 'auto' }} className="object-contain" />
                 </div>
 
                 <div className="flex items-center gap-4">
