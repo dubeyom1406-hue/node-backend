@@ -23,8 +23,8 @@ const Badge = ({ children, color = 'emerald' }) => {
         rose: 'bg-rose-100 text-rose-600 border-rose-200',
     };
     return (
-        <span className={`inline-flex items-center gap-1.5 text-[9px] font-black px-2.5 py-1 rounded-full border uppercase tracking-widest ${map[color]}`}>
-            <span className={`w-1 h-1 rounded-full animate-pulse ${color === 'amber' ? 'bg-amber-500' : color === 'emerald' ? 'bg-emerald-500' : color === 'blue' ? 'bg-blue-500' : 'bg-rose-500'}`} />
+        <span className={`inline-flex items-center gap-1.5 text-[9px] font-black px-2.5 py-1 rounded-full border uppercase tracking-widest ${map[color]}`} style={color === 'blue' ? { backgroundColor: 'var(--primary-color-10)', color: 'var(--primary-color)', borderColor: 'var(--primary-color-20)' } : undefined}>
+            <span className={`w-1 h-1 rounded-full animate-pulse`} style={{ backgroundColor: color === 'blue' ? 'var(--primary-color)' : color === 'amber' ? '#f59e0b' : color === 'emerald' ? '#10b981' : '#f43f5e' }} />
             {children}
         </span>
     );
@@ -54,7 +54,7 @@ const ServiceItem = ({ label, emoji, color, onClick }) => (
         onClick={onClick}
         className="group flex flex-col items-center gap-3 cursor-pointer"
     >
-        <div className={`w-16 h-16 rounded-[24px] flex items-center justify-center text-3xl shadow-xl transition-all duration-300 bg-gradient-to-br ${color} group-hover:shadow-blue-500/20`}>
+        <div className={`w-16 h-16 rounded-[24px] flex items-center justify-center text-3xl shadow-xl transition-all duration-300 bg-gradient-to-br ${color} group-hover:shadow-[var(--primary-color-20)]`}>
             <span className="drop-shadow-sm">{emoji}</span>
         </div>
         <span className="text-[10px] font-black text-slate-500 group-hover:text-slate-800 text-center uppercase tracking-tight leading-tight transition-colors">
@@ -291,7 +291,8 @@ const RetailerDashboard = () => {
                     layout
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="bg-white border border-slate-100 p-8 lg:p-12 rounded-[48px] shadow-sm relative z-10 overflow-hidden"
+                    className="border border-slate-100 p-8 lg:p-12 rounded-[48px] shadow-sm relative z-10 overflow-hidden transition-colors duration-500"
+                    style={{ backgroundColor: 'var(--primary-color-5)' }}
                 >
                     <div className="flex justify-between items-center mb-6">
                         <div className="space-y-1 -mt-4 -ml-2">
@@ -391,7 +392,7 @@ const RetailerDashboard = () => {
                     <div className="lg:col-span-8 space-y-10">
 
                         {/* Transaction Trend Chart */}
-                        <div className="bg-white border border-slate-100 p-8 rounded-[48px] shadow-sm">
+                        <div className="border border-slate-100 p-8 rounded-[48px] shadow-sm transition-colors duration-500" style={{ backgroundColor: 'var(--primary-color-5)' }}>
                             <div className="flex justify-between items-center mb-8">
                                 <div className="space-y-1">
                                     <h3 className="text-xl font-black tracking-tight text-slate-800">Volume Trend</h3>
@@ -495,27 +496,31 @@ const RetailerDashboard = () => {
                                 </div>
 
                                 {/* AEPS HIGHLIGHT - TOP AS REQUESTED */}
-                                <div className="mb-8 p-6 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[32px] text-white shadow-lg shadow-blue-200/50">
-                                    <div className="flex justify-between items-center mb-4">
-                                        <span className="text-[9px] font-black uppercase tracking-[0.2em] opacity-80">Primary Service (AEPS)</span>
-                                        <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                                    </div>
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl backdrop-blur-md">🏦</div>
-                                        <div>
-                                            <h4 className="text-[10px] font-black uppercase tracking-widest opacity-70">AEPS Volume ({selectedPeriod})</h4>
-                                            <p className="text-2xl font-black tracking-tighter">₹{stats.aepsVolume.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</p>
+                                {/* Performance Analytics Card */}
+                                <div className="mb-8 p-6 rounded-[32px] text-white shadow-lg transition-all duration-500 overflow-hidden relative" style={{ background: `linear-gradient(135deg, var(--primary-color), var(--primary-color))` }}>
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 blur-3xl -mr-10 -mt-10 rounded-full" />
+                                    <div className="relative z-10">
+                                        <div className="flex justify-between items-center mb-4">
+                                            <span className="text-[9px] font-black uppercase tracking-[0.2em] opacity-80">Primary Service (AEPS)</span>
+                                            <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                                        </div>
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl backdrop-blur-md">🏦</div>
+                                            <div>
+                                                <h4 className="text-[10px] font-black uppercase tracking-widest opacity-70">AEPS Volume ({selectedPeriod})</h4>
+                                                <p className="text-2xl font-black tracking-tighter">₹{stats.aepsVolume.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="grid grid-cols-1 gap-4 mb-8">
                                     {/* Stat 1: Count */}
-                                    <div className="p-5 bg-slate-50/50 rounded-[28px] border border-slate-100 border-dashed">
+                                    <div className="p-5 rounded-[28px] border border-slate-100 border-dashed transition-colors duration-500" style={{ backgroundColor: 'var(--primary-color-5)' }}>
                                         <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Total {selectedPeriod} Count</p>
                                         <div className="flex items-center justify-between">
                                             <h4 className="text-2xl font-black tracking-tighter text-slate-800">{stats.totalCount.toLocaleString()}</h4>
-                                            <div className="flex flex-col items-end text-[9px] font-black text-blue-600 uppercase">
+                                            <div className="flex flex-col items-end text-[9px] font-black uppercase" style={{ color: 'var(--primary-color)' }}>
                                                 <span>₹{stats.totalVolume.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span>
                                                 <span className="opacity-50">Volume</span>
                                             </div>

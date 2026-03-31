@@ -217,8 +217,9 @@ const Sidebar = ({ activeTab, setActiveTab, showMobileSidebar }) => {
                 x: typeof window !== 'undefined' && window.innerWidth < 1024 ? (showMobileSidebar ? 0 : -260) : 0
             }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className={`fixed lg:relative bg-white flex-shrink-0 border-r border-slate-100 flex flex-col h-full font-['Inter',sans-serif] z-50 lg:z-20 overflow-hidden
+            className={`fixed lg:relative flex-shrink-0 border-r border-slate-100 flex flex-col h-full font-['Inter',sans-serif] z-50 lg:z-20 transition-colors duration-500
                 ${showMobileSidebar ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
+            style={{ backgroundColor: 'var(--primary-color-5)' }}
         >
             {/* Logo Area */}
             <div className={`p-6 flex items-center ${isHovered ? 'justify-start' : 'justify-center'} h-20`}>
