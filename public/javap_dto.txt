@@ -1,0 +1,925 @@
+Classfile /c:/Users/dubey/Downloads/RUPIKSHA/frontend/public/BOOT-INF/classes/com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO.class
+  Last modified 18-Mar-2026; size 5195 bytes
+  SHA-256 checksum b860e4bcc421a8f495a9d5744d84b9c5df5bdc7f5ef89882d0567eec63adfb26
+  Compiled from "OnboardRequestDTO.java"
+public class com.example.Rupiksha.Fingpay.dto.OnboardRequestDTO
+  minor version: 0
+  major version: 61
+  flags: (0x0021) ACC_PUBLIC, ACC_SUPER
+  this_class: #8                          // com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO
+  super_class: #2                         // java/lang/Object
+  interfaces: 0, fields: 7, methods: 19, attributes: 3
+Constant pool:
+    #1 = Methodref          #2.#3         // java/lang/Object."<init>":()V
+    #2 = Class              #4            // java/lang/Object
+    #3 = NameAndType        #5:#6         // "<init>":()V
+    #4 = Utf8               java/lang/Object
+    #5 = Utf8               <init>
+    #6 = Utf8               ()V
+    #7 = Fieldref           #8.#9         // com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO.username:Ljava/lang/String;
+    #8 = Class              #10           // com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO
+    #9 = NameAndType        #11:#12       // username:Ljava/lang/String;
+   #10 = Utf8               com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO
+   #11 = Utf8               username
+   #12 = Utf8               Ljava/lang/String;
+   #13 = Fieldref           #8.#14        // com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO.password:Ljava/lang/String;
+   #14 = NameAndType        #15:#12       // password:Ljava/lang/String;
+   #15 = Utf8               password
+   #16 = Fieldref           #8.#17        // com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO.ipAddress:Ljava/lang/String;
+   #17 = NameAndType        #18:#12       // ipAddress:Ljava/lang/String;
+   #18 = Utf8               ipAddress
+   #19 = Fieldref           #8.#20        // com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO.latitude:Ljava/lang/Double;
+   #20 = NameAndType        #21:#22       // latitude:Ljava/lang/Double;
+   #21 = Utf8               latitude
+   #22 = Utf8               Ljava/lang/Double;
+   #23 = Fieldref           #8.#24        // com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO.longitude:Ljava/lang/Double;
+   #24 = NameAndType        #25:#22       // longitude:Ljava/lang/Double;
+   #25 = Utf8               longitude
+   #26 = Fieldref           #8.#27        // com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO.superMerchantId:Ljava/lang/Integer;
+   #27 = NameAndType        #28:#29       // superMerchantId:Ljava/lang/Integer;
+   #28 = Utf8               superMerchantId
+   #29 = Utf8               Ljava/lang/Integer;
+   #30 = Fieldref           #8.#31        // com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO.merchant:Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;
+   #31 = NameAndType        #32:#33       // merchant:Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;
+   #32 = Utf8               merchant
+   #33 = Utf8               Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;
+   #34 = Methodref          #8.#35        // com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO.canEqual:(Ljava/lang/Object;)Z
+   #35 = NameAndType        #36:#37       // canEqual:(Ljava/lang/Object;)Z
+   #36 = Utf8               canEqual
+   #37 = Utf8               (Ljava/lang/Object;)Z
+   #38 = Methodref          #8.#39        // com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO.getLatitude:()Ljava/lang/Double;
+   #39 = NameAndType        #40:#41       // getLatitude:()Ljava/lang/Double;
+   #40 = Utf8               getLatitude
+   #41 = Utf8               ()Ljava/lang/Double;
+   #42 = Methodref          #2.#43        // java/lang/Object.equals:(Ljava/lang/Object;)Z
+   #43 = NameAndType        #44:#37       // equals:(Ljava/lang/Object;)Z
+   #44 = Utf8               equals
+   #45 = Methodref          #8.#46        // com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO.getLongitude:()Ljava/lang/Double;
+   #46 = NameAndType        #47:#41       // getLongitude:()Ljava/lang/Double;
+   #47 = Utf8               getLongitude
+   #48 = Methodref          #8.#49        // com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO.getSuperMerchantId:()Ljava/lang/Integer;
+   #49 = NameAndType        #50:#51       // getSuperMerchantId:()Ljava/lang/Integer;
+   #50 = Utf8               getSuperMerchantId
+   #51 = Utf8               ()Ljava/lang/Integer;
+   #52 = Methodref          #8.#53        // com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO.getUsername:()Ljava/lang/String;
+   #53 = NameAndType        #54:#55       // getUsername:()Ljava/lang/String;
+   #54 = Utf8               getUsername
+   #55 = Utf8               ()Ljava/lang/String;
+   #56 = Methodref          #8.#57        // com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO.getPassword:()Ljava/lang/String;
+   #57 = NameAndType        #58:#55       // getPassword:()Ljava/lang/String;
+   #58 = Utf8               getPassword
+   #59 = Methodref          #8.#60        // com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO.getIpAddress:()Ljava/lang/String;
+   #60 = NameAndType        #61:#55       // getIpAddress:()Ljava/lang/String;
+   #61 = Utf8               getIpAddress
+   #62 = Methodref          #8.#63        // com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO.getMerchant:()Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;
+   #63 = NameAndType        #64:#65       // getMerchant:()Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;
+   #64 = Utf8               getMerchant
+   #65 = Utf8               ()Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;
+   #66 = Methodref          #2.#67        // java/lang/Object.hashCode:()I
+   #67 = NameAndType        #68:#69       // hashCode:()I
+   #68 = Utf8               hashCode
+   #69 = Utf8               ()I
+   #70 = InvokeDynamic      #0:#71        // #0:makeConcatWithConstants:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Integer;Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;)Ljava/lang/String;
+   #71 = NameAndType        #72:#73       // makeConcatWithConstants:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Integer;Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;)Ljava/lang/String;
+   #72 = Utf8               makeConcatWithConstants
+   #73 = Utf8               (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Integer;Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;)Ljava/lang/String;
+   #74 = Utf8               Code
+   #75 = Utf8               LineNumberTable
+   #76 = Utf8               LocalVariableTable
+   #77 = Utf8               this
+   #78 = Utf8               Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+   #79 = Utf8               RuntimeInvisibleAnnotations
+   #80 = Utf8               Llombok/Generated;
+   #81 = Utf8               setUsername
+   #82 = Utf8               (Ljava/lang/String;)V
+   #83 = Utf8               MethodParameters
+   #84 = Utf8               setPassword
+   #85 = Utf8               setIpAddress
+   #86 = Utf8               setLatitude
+   #87 = Utf8               (Ljava/lang/Double;)V
+   #88 = Utf8               setLongitude
+   #89 = Utf8               setSuperMerchantId
+   #90 = Utf8               (Ljava/lang/Integer;)V
+   #91 = Utf8               setMerchant
+   #92 = Utf8               (Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;)V
+   #93 = Utf8               o
+   #94 = Utf8               Ljava/lang/Object;
+   #95 = Utf8               other
+   #96 = Utf8               this$latitude
+   #97 = Utf8               other$latitude
+   #98 = Utf8               this$longitude
+   #99 = Utf8               other$longitude
+  #100 = Utf8               this$superMerchantId
+  #101 = Utf8               other$superMerchantId
+  #102 = Utf8               this$username
+  #103 = Utf8               other$username
+  #104 = Utf8               this$password
+  #105 = Utf8               other$password
+  #106 = Utf8               this$ipAddress
+  #107 = Utf8               other$ipAddress
+  #108 = Utf8               this$merchant
+  #109 = Utf8               other$merchant
+  #110 = Utf8               StackMapTable
+  #111 = Utf8               PRIME
+  #112 = Utf8               I
+  #113 = Utf8               result
+  #114 = Utf8               $latitude
+  #115 = Utf8               $longitude
+  #116 = Utf8               $superMerchantId
+  #117 = Utf8               $username
+  #118 = Utf8               $password
+  #119 = Utf8               $ipAddress
+  #120 = Utf8               $merchant
+  #121 = Utf8               toString
+  #122 = Utf8               SourceFile
+  #123 = Utf8               OnboardRequestDTO.java
+  #124 = Utf8               BootstrapMethods
+  #125 = MethodHandle       6:#126        // REF_invokeStatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/invoke/CallSite;
+  #126 = Methodref          #127.#128     // java/lang/invoke/StringConcatFactory.makeConcatWithConstants:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/invoke/CallSite;
+  #127 = Class              #129          // java/lang/invoke/StringConcatFactory
+  #128 = NameAndType        #72:#130      // makeConcatWithConstants:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/invoke/CallSite;
+  #129 = Utf8               java/lang/invoke/StringConcatFactory
+  #130 = Utf8               (Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/invoke/CallSite;
+  #131 = String             #132          // OnboardRequestDTO(username=\u0001, password=\u0001, ipAddress=\u0001, latitude=\u0001, longitude=\u0001, superMerchantId=\u0001, merchant=\u0001)
+  #132 = Utf8               OnboardRequestDTO(username=\u0001, password=\u0001, ipAddress=\u0001, latitude=\u0001, longitude=\u0001, superMerchantId=\u0001, merchant=\u0001)
+  #133 = Utf8               InnerClasses
+  #134 = Class              #135          // java/lang/invoke/MethodHandles$Lookup
+  #135 = Utf8               java/lang/invoke/MethodHandles$Lookup
+  #136 = Class              #137          // java/lang/invoke/MethodHandles
+  #137 = Utf8               java/lang/invoke/MethodHandles
+  #138 = Utf8               Lookup
+{
+  private java.lang.String username;
+    descriptor: Ljava/lang/String;
+    flags: (0x0002) ACC_PRIVATE
+
+  private java.lang.String password;
+    descriptor: Ljava/lang/String;
+    flags: (0x0002) ACC_PRIVATE
+
+  private java.lang.String ipAddress;
+    descriptor: Ljava/lang/String;
+    flags: (0x0002) ACC_PRIVATE
+
+  private java.lang.Double latitude;
+    descriptor: Ljava/lang/Double;
+    flags: (0x0002) ACC_PRIVATE
+
+  private java.lang.Double longitude;
+    descriptor: Ljava/lang/Double;
+    flags: (0x0002) ACC_PRIVATE
+
+  private java.lang.Integer superMerchantId;
+    descriptor: Ljava/lang/Integer;
+    flags: (0x0002) ACC_PRIVATE
+
+  private com.example.Rupiksha.Fingpay.dto.MerchantDTO merchant;
+    descriptor: Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;
+    flags: (0x0002) ACC_PRIVATE
+
+  public com.example.Rupiksha.Fingpay.dto.OnboardRequestDTO();
+    descriptor: ()V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: return
+      LineNumberTable:
+        line 5: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       5     0  this   Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+    RuntimeInvisibleAnnotations:
+      0: #80()
+        lombok.Generated
+
+  public java.lang.String getUsername();
+    descriptor: ()Ljava/lang/String;
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: getfield      #7                  // Field username:Ljava/lang/String;
+         4: areturn
+      LineNumberTable:
+        line 8: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       5     0  this   Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+    RuntimeInvisibleAnnotations:
+      0: #80()
+        lombok.Generated
+
+  public java.lang.String getPassword();
+    descriptor: ()Ljava/lang/String;
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: getfield      #13                 // Field password:Ljava/lang/String;
+         4: areturn
+      LineNumberTable:
+        line 9: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       5     0  this   Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+    RuntimeInvisibleAnnotations:
+      0: #80()
+        lombok.Generated
+
+  public java.lang.String getIpAddress();
+    descriptor: ()Ljava/lang/String;
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: getfield      #16                 // Field ipAddress:Ljava/lang/String;
+         4: areturn
+      LineNumberTable:
+        line 10: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       5     0  this   Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+    RuntimeInvisibleAnnotations:
+      0: #80()
+        lombok.Generated
+
+  public java.lang.Double getLatitude();
+    descriptor: ()Ljava/lang/Double;
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: getfield      #19                 // Field latitude:Ljava/lang/Double;
+         4: areturn
+      LineNumberTable:
+        line 11: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       5     0  this   Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+    RuntimeInvisibleAnnotations:
+      0: #80()
+        lombok.Generated
+
+  public java.lang.Double getLongitude();
+    descriptor: ()Ljava/lang/Double;
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: getfield      #23                 // Field longitude:Ljava/lang/Double;
+         4: areturn
+      LineNumberTable:
+        line 12: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       5     0  this   Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+    RuntimeInvisibleAnnotations:
+      0: #80()
+        lombok.Generated
+
+  public java.lang.Integer getSuperMerchantId();
+    descriptor: ()Ljava/lang/Integer;
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: getfield      #26                 // Field superMerchantId:Ljava/lang/Integer;
+         4: areturn
+      LineNumberTable:
+        line 13: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       5     0  this   Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+    RuntimeInvisibleAnnotations:
+      0: #80()
+        lombok.Generated
+
+  public com.example.Rupiksha.Fingpay.dto.MerchantDTO getMerchant();
+    descriptor: ()Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: getfield      #30                 // Field merchant:Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;
+         4: areturn
+      LineNumberTable:
+        line 14: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       5     0  this   Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+    RuntimeInvisibleAnnotations:
+      0: #80()
+        lombok.Generated
+
+  public void setUsername(java.lang.String);
+    descriptor: (Ljava/lang/String;)V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0
+         1: aload_1
+         2: putfield      #7                  // Field username:Ljava/lang/String;
+         5: return
+      LineNumberTable:
+        line 5: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       6     0  this   Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+            0       6     1 username   Ljava/lang/String;
+    MethodParameters:
+      Name                           Flags
+      username                       final
+    RuntimeInvisibleAnnotations:
+      0: #80()
+        lombok.Generated
+
+  public void setPassword(java.lang.String);
+    descriptor: (Ljava/lang/String;)V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0
+         1: aload_1
+         2: putfield      #13                 // Field password:Ljava/lang/String;
+         5: return
+      LineNumberTable:
+        line 5: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       6     0  this   Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+            0       6     1 password   Ljava/lang/String;
+    MethodParameters:
+      Name                           Flags
+      password                       final
+    RuntimeInvisibleAnnotations:
+      0: #80()
+        lombok.Generated
+
+  public void setIpAddress(java.lang.String);
+    descriptor: (Ljava/lang/String;)V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0
+         1: aload_1
+         2: putfield      #16                 // Field ipAddress:Ljava/lang/String;
+         5: return
+      LineNumberTable:
+        line 5: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       6     0  this   Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+            0       6     1 ipAddress   Ljava/lang/String;
+    MethodParameters:
+      Name                           Flags
+      ipAddress                      final
+    RuntimeInvisibleAnnotations:
+      0: #80()
+        lombok.Generated
+
+  public void setLatitude(java.lang.Double);
+    descriptor: (Ljava/lang/Double;)V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0
+         1: aload_1
+         2: putfield      #19                 // Field latitude:Ljava/lang/Double;
+         5: return
+      LineNumberTable:
+        line 5: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       6     0  this   Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+            0       6     1 latitude   Ljava/lang/Double;
+    MethodParameters:
+      Name                           Flags
+      latitude                       final
+    RuntimeInvisibleAnnotations:
+      0: #80()
+        lombok.Generated
+
+  public void setLongitude(java.lang.Double);
+    descriptor: (Ljava/lang/Double;)V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0
+         1: aload_1
+         2: putfield      #23                 // Field longitude:Ljava/lang/Double;
+         5: return
+      LineNumberTable:
+        line 5: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       6     0  this   Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+            0       6     1 longitude   Ljava/lang/Double;
+    MethodParameters:
+      Name                           Flags
+      longitude                      final
+    RuntimeInvisibleAnnotations:
+      0: #80()
+        lombok.Generated
+
+  public void setSuperMerchantId(java.lang.Integer);
+    descriptor: (Ljava/lang/Integer;)V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0
+         1: aload_1
+         2: putfield      #26                 // Field superMerchantId:Ljava/lang/Integer;
+         5: return
+      LineNumberTable:
+        line 5: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       6     0  this   Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+            0       6     1 superMerchantId   Ljava/lang/Integer;
+    MethodParameters:
+      Name                           Flags
+      superMerchantId                final
+    RuntimeInvisibleAnnotations:
+      0: #80()
+        lombok.Generated
+
+  public void setMerchant(com.example.Rupiksha.Fingpay.dto.MerchantDTO);
+    descriptor: (Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;)V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0
+         1: aload_1
+         2: putfield      #30                 // Field merchant:Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;
+         5: return
+      LineNumberTable:
+        line 5: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       6     0  this   Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+            0       6     1 merchant   Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;
+    MethodParameters:
+      Name                           Flags
+      merchant                       final
+    RuntimeInvisibleAnnotations:
+      0: #80()
+        lombok.Generated
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=2, locals=17, args_size=2
+         0: aload_1
+         1: aload_0
+         2: if_acmpne     7
+         5: iconst_1
+         6: ireturn
+         7: aload_1
+         8: instanceof    #8                  // class com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO
+        11: ifne          16
+        14: iconst_0
+        15: ireturn
+        16: aload_1
+        17: checkcast     #8                  // class com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO
+        20: astore_2
+        21: aload_2
+        22: aload_0
+        23: invokevirtual #34                 // Method canEqual:(Ljava/lang/Object;)Z
+        26: ifne          31
+        29: iconst_0
+        30: ireturn
+        31: aload_0
+        32: invokevirtual #38                 // Method getLatitude:()Ljava/lang/Double;
+        35: astore_3
+        36: aload_2
+        37: invokevirtual #38                 // Method getLatitude:()Ljava/lang/Double;
+        40: astore        4
+        42: aload_3
+        43: ifnonnull     54
+        46: aload         4
+        48: ifnull        65
+        51: goto          63
+        54: aload_3
+        55: aload         4
+        57: invokevirtual #42                 // Method java/lang/Object.equals:(Ljava/lang/Object;)Z
+        60: ifne          65
+        63: iconst_0
+        64: ireturn
+        65: aload_0
+        66: invokevirtual #45                 // Method getLongitude:()Ljava/lang/Double;
+        69: astore        5
+        71: aload_2
+        72: invokevirtual #45                 // Method getLongitude:()Ljava/lang/Double;
+        75: astore        6
+        77: aload         5
+        79: ifnonnull     90
+        82: aload         6
+        84: ifnull        102
+        87: goto          100
+        90: aload         5
+        92: aload         6
+        94: invokevirtual #42                 // Method java/lang/Object.equals:(Ljava/lang/Object;)Z
+        97: ifne          102
+       100: iconst_0
+       101: ireturn
+       102: aload_0
+       103: invokevirtual #48                 // Method getSuperMerchantId:()Ljava/lang/Integer;
+       106: astore        7
+       108: aload_2
+       109: invokevirtual #48                 // Method getSuperMerchantId:()Ljava/lang/Integer;
+       112: astore        8
+       114: aload         7
+       116: ifnonnull     127
+       119: aload         8
+       121: ifnull        139
+       124: goto          137
+       127: aload         7
+       129: aload         8
+       131: invokevirtual #42                 // Method java/lang/Object.equals:(Ljava/lang/Object;)Z
+       134: ifne          139
+       137: iconst_0
+       138: ireturn
+       139: aload_0
+       140: invokevirtual #52                 // Method getUsername:()Ljava/lang/String;
+       143: astore        9
+       145: aload_2
+       146: invokevirtual #52                 // Method getUsername:()Ljava/lang/String;
+       149: astore        10
+       151: aload         9
+       153: ifnonnull     164
+       156: aload         10
+       158: ifnull        176
+       161: goto          174
+       164: aload         9
+       166: aload         10
+       168: invokevirtual #42                 // Method java/lang/Object.equals:(Ljava/lang/Object;)Z
+       171: ifne          176
+       174: iconst_0
+       175: ireturn
+       176: aload_0
+       177: invokevirtual #56                 // Method getPassword:()Ljava/lang/String;
+       180: astore        11
+       182: aload_2
+       183: invokevirtual #56                 // Method getPassword:()Ljava/lang/String;
+       186: astore        12
+       188: aload         11
+       190: ifnonnull     201
+       193: aload         12
+       195: ifnull        213
+       198: goto          211
+       201: aload         11
+       203: aload         12
+       205: invokevirtual #42                 // Method java/lang/Object.equals:(Ljava/lang/Object;)Z
+       208: ifne          213
+       211: iconst_0
+       212: ireturn
+       213: aload_0
+       214: invokevirtual #59                 // Method getIpAddress:()Ljava/lang/String;
+       217: astore        13
+       219: aload_2
+       220: invokevirtual #59                 // Method getIpAddress:()Ljava/lang/String;
+       223: astore        14
+       225: aload         13
+       227: ifnonnull     238
+       230: aload         14
+       232: ifnull        250
+       235: goto          248
+       238: aload         13
+       240: aload         14
+       242: invokevirtual #42                 // Method java/lang/Object.equals:(Ljava/lang/Object;)Z
+       245: ifne          250
+       248: iconst_0
+       249: ireturn
+       250: aload_0
+       251: invokevirtual #62                 // Method getMerchant:()Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;
+       254: astore        15
+       256: aload_2
+       257: invokevirtual #62                 // Method getMerchant:()Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;
+       260: astore        16
+       262: aload         15
+       264: ifnonnull     275
+       267: aload         16
+       269: ifnull        287
+       272: goto          285
+       275: aload         15
+       277: aload         16
+       279: invokevirtual #42                 // Method java/lang/Object.equals:(Ljava/lang/Object;)Z
+       282: ifne          287
+       285: iconst_0
+       286: ireturn
+       287: iconst_1
+       288: ireturn
+      LineNumberTable:
+        line 5: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0     289     0  this   Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+            0     289     1     o   Ljava/lang/Object;
+           21     268     2 other   Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+           36     253     3 this$latitude   Ljava/lang/Object;
+           42     247     4 other$latitude   Ljava/lang/Object;
+           71     218     5 this$longitude   Ljava/lang/Object;
+           77     212     6 other$longitude   Ljava/lang/Object;
+          108     181     7 this$superMerchantId   Ljava/lang/Object;
+          114     175     8 other$superMerchantId   Ljava/lang/Object;
+          145     144     9 this$username   Ljava/lang/Object;
+          151     138    10 other$username   Ljava/lang/Object;
+          182     107    11 this$password   Ljava/lang/Object;
+          188     101    12 other$password   Ljava/lang/Object;
+          219      70    13 this$ipAddress   Ljava/lang/Object;
+          225      64    14 other$ipAddress   Ljava/lang/Object;
+          256      33    15 this$merchant   Ljava/lang/Object;
+          262      27    16 other$merchant   Ljava/lang/Object;
+      StackMapTable: number_of_entries = 24
+        frame_type = 7 /* same */
+        frame_type = 8 /* same */
+        frame_type = 252 /* append */
+          offset_delta = 14
+          locals = [ class com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO ]
+        frame_type = 253 /* append */
+          offset_delta = 22
+          locals = [ class java/lang/Object, class java/lang/Object ]
+        frame_type = 8 /* same */
+        frame_type = 1 /* same */
+        frame_type = 253 /* append */
+          offset_delta = 24
+          locals = [ class java/lang/Object, class java/lang/Object ]
+        frame_type = 9 /* same */
+        frame_type = 1 /* same */
+        frame_type = 253 /* append */
+          offset_delta = 24
+          locals = [ class java/lang/Object, class java/lang/Object ]
+        frame_type = 9 /* same */
+        frame_type = 1 /* same */
+        frame_type = 253 /* append */
+          offset_delta = 24
+          locals = [ class java/lang/Object, class java/lang/Object ]
+        frame_type = 9 /* same */
+        frame_type = 1 /* same */
+        frame_type = 253 /* append */
+          offset_delta = 24
+          locals = [ class java/lang/Object, class java/lang/Object ]
+        frame_type = 9 /* same */
+        frame_type = 1 /* same */
+        frame_type = 253 /* append */
+          offset_delta = 24
+          locals = [ class java/lang/Object, class java/lang/Object ]
+        frame_type = 9 /* same */
+        frame_type = 1 /* same */
+        frame_type = 253 /* append */
+          offset_delta = 24
+          locals = [ class java/lang/Object, class java/lang/Object ]
+        frame_type = 9 /* same */
+        frame_type = 1 /* same */
+    MethodParameters:
+      Name                           Flags
+      o                              final
+    RuntimeInvisibleAnnotations:
+      0: #80()
+        lombok.Generated
+
+  protected boolean canEqual(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+    flags: (0x0004) ACC_PROTECTED
+    Code:
+      stack=1, locals=2, args_size=2
+         0: aload_1
+         1: instanceof    #8                  // class com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO
+         4: ireturn
+      LineNumberTable:
+        line 5: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       5     0  this   Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+            0       5     1 other   Ljava/lang/Object;
+    MethodParameters:
+      Name                           Flags
+      other                          final
+    RuntimeInvisibleAnnotations:
+      0: #80()
+        lombok.Generated
+
+  public int hashCode();
+    descriptor: ()I
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=2, locals=10, args_size=1
+         0: bipush        59
+         2: istore_1
+         3: iconst_1
+         4: istore_2
+         5: aload_0
+         6: invokevirtual #38                 // Method getLatitude:()Ljava/lang/Double;
+         9: astore_3
+        10: iload_2
+        11: bipush        59
+        13: imul
+        14: aload_3
+        15: ifnonnull     23
+        18: bipush        43
+        20: goto          27
+        23: aload_3
+        24: invokevirtual #66                 // Method java/lang/Object.hashCode:()I
+        27: iadd
+        28: istore_2
+        29: aload_0
+        30: invokevirtual #45                 // Method getLongitude:()Ljava/lang/Double;
+        33: astore        4
+        35: iload_2
+        36: bipush        59
+        38: imul
+        39: aload         4
+        41: ifnonnull     49
+        44: bipush        43
+        46: goto          54
+        49: aload         4
+        51: invokevirtual #66                 // Method java/lang/Object.hashCode:()I
+        54: iadd
+        55: istore_2
+        56: aload_0
+        57: invokevirtual #48                 // Method getSuperMerchantId:()Ljava/lang/Integer;
+        60: astore        5
+        62: iload_2
+        63: bipush        59
+        65: imul
+        66: aload         5
+        68: ifnonnull     76
+        71: bipush        43
+        73: goto          81
+        76: aload         5
+        78: invokevirtual #66                 // Method java/lang/Object.hashCode:()I
+        81: iadd
+        82: istore_2
+        83: aload_0
+        84: invokevirtual #52                 // Method getUsername:()Ljava/lang/String;
+        87: astore        6
+        89: iload_2
+        90: bipush        59
+        92: imul
+        93: aload         6
+        95: ifnonnull     103
+        98: bipush        43
+       100: goto          108
+       103: aload         6
+       105: invokevirtual #66                 // Method java/lang/Object.hashCode:()I
+       108: iadd
+       109: istore_2
+       110: aload_0
+       111: invokevirtual #56                 // Method getPassword:()Ljava/lang/String;
+       114: astore        7
+       116: iload_2
+       117: bipush        59
+       119: imul
+       120: aload         7
+       122: ifnonnull     130
+       125: bipush        43
+       127: goto          135
+       130: aload         7
+       132: invokevirtual #66                 // Method java/lang/Object.hashCode:()I
+       135: iadd
+       136: istore_2
+       137: aload_0
+       138: invokevirtual #59                 // Method getIpAddress:()Ljava/lang/String;
+       141: astore        8
+       143: iload_2
+       144: bipush        59
+       146: imul
+       147: aload         8
+       149: ifnonnull     157
+       152: bipush        43
+       154: goto          162
+       157: aload         8
+       159: invokevirtual #66                 // Method java/lang/Object.hashCode:()I
+       162: iadd
+       163: istore_2
+       164: aload_0
+       165: invokevirtual #62                 // Method getMerchant:()Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;
+       168: astore        9
+       170: iload_2
+       171: bipush        59
+       173: imul
+       174: aload         9
+       176: ifnonnull     184
+       179: bipush        43
+       181: goto          189
+       184: aload         9
+       186: invokevirtual #66                 // Method java/lang/Object.hashCode:()I
+       189: iadd
+       190: istore_2
+       191: iload_2
+       192: ireturn
+      LineNumberTable:
+        line 5: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0     193     0  this   Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+            3     190     1 PRIME   I
+            5     188     2 result   I
+           10     183     3 $latitude   Ljava/lang/Object;
+           35     158     4 $longitude   Ljava/lang/Object;
+           62     131     5 $superMerchantId   Ljava/lang/Object;
+           89     104     6 $username   Ljava/lang/Object;
+          116      77     7 $password   Ljava/lang/Object;
+          143      50     8 $ipAddress   Ljava/lang/Object;
+          170      23     9 $merchant   Ljava/lang/Object;
+      StackMapTable: number_of_entries = 14
+        frame_type = 255 /* full_frame */
+          offset_delta = 23
+          locals = [ class com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO, int, int, class java/lang/Object ]
+          stack = [ int ]
+        frame_type = 255 /* full_frame */
+          offset_delta = 3
+          locals = [ class com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO, int, int, class java/lang/Object ]
+          stack = [ int, int ]
+        frame_type = 255 /* full_frame */
+          offset_delta = 21
+          locals = [ class com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO, int, int, class java/lang/Object, class java/lang/Object ]
+          stack = [ int ]
+        frame_type = 255 /* full_frame */
+          offset_delta = 4
+          locals = [ class com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO, int, int, class java/lang/Object, class java/lang/Object ]
+          stack = [ int, int ]
+        frame_type = 255 /* full_frame */
+          offset_delta = 21
+          locals = [ class com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO, int, int, class java/lang/Object, class java/lang/Object, class java/lang/Object ]
+          stack = [ int ]
+        frame_type = 255 /* full_frame */
+          offset_delta = 4
+          locals = [ class com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO, int, int, class java/lang/Object, class java/lang/Object, class java/lang/Object ]
+          stack = [ int, int ]
+        frame_type = 255 /* full_frame */
+          offset_delta = 21
+          locals = [ class com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO, int, int, class java/lang/Object, class java/lang/Object, class java/lang/Object, class java/lang/Object ]
+          stack = [ int ]
+        frame_type = 255 /* full_frame */
+          offset_delta = 4
+          locals = [ class com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO, int, int, class java/lang/Object, class java/lang/Object, class java/lang/Object, class java/lang/Object ]
+          stack = [ int, int ]
+        frame_type = 255 /* full_frame */
+          offset_delta = 21
+          locals = [ class com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO, int, int, class java/lang/Object, class java/lang/Object, class java/lang/Object, class java/lang/Object, class java/lang/Object ]
+          stack = [ int ]
+        frame_type = 255 /* full_frame */
+          offset_delta = 4
+          locals = [ class com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO, int, int, class java/lang/Object, class java/lang/Object, class java/lang/Object, class java/lang/Object, class java/lang/Object ]
+          stack = [ int, int ]
+        frame_type = 255 /* full_frame */
+          offset_delta = 21
+          locals = [ class com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO, int, int, class java/lang/Object, class java/lang/Object, class java/lang/Object, class java/lang/Object, class java/lang/Object, class java/lang/Object ]
+          stack = [ int ]
+        frame_type = 255 /* full_frame */
+          offset_delta = 4
+          locals = [ class com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO, int, int, class java/lang/Object, class java/lang/Object, class java/lang/Object, class java/lang/Object, class java/lang/Object, class java/lang/Object ]
+          stack = [ int, int ]
+        frame_type = 255 /* full_frame */
+          offset_delta = 21
+          locals = [ class com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO, int, int, class java/lang/Object, class java/lang/Object, class java/lang/Object, class java/lang/Object, class java/lang/Object, class java/lang/Object, class java/lang/Object ]
+          stack = [ int ]
+        frame_type = 255 /* full_frame */
+          offset_delta = 4
+          locals = [ class com/example/Rupiksha/Fingpay/dto/OnboardRequestDTO, int, int, class java/lang/Object, class java/lang/Object, class java/lang/Object, class java/lang/Object, class java/lang/Object, class java/lang/Object, class java/lang/Object ]
+          stack = [ int, int ]
+    RuntimeInvisibleAnnotations:
+      0: #80()
+        lombok.Generated
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=7, locals=1, args_size=1
+         0: aload_0
+         1: invokevirtual #52                 // Method getUsername:()Ljava/lang/String;
+         4: aload_0
+         5: invokevirtual #56                 // Method getPassword:()Ljava/lang/String;
+         8: aload_0
+         9: invokevirtual #59                 // Method getIpAddress:()Ljava/lang/String;
+        12: aload_0
+        13: invokevirtual #38                 // Method getLatitude:()Ljava/lang/Double;
+        16: aload_0
+        17: invokevirtual #45                 // Method getLongitude:()Ljava/lang/Double;
+        20: aload_0
+        21: invokevirtual #48                 // Method getSuperMerchantId:()Ljava/lang/Integer;
+        24: aload_0
+        25: invokevirtual #62                 // Method getMerchant:()Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;
+        28: invokedynamic #70,  0             // InvokeDynamic #0:makeConcatWithConstants:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Integer;Lcom/example/Rupiksha/Fingpay/dto/MerchantDTO;)Ljava/lang/String;
+        33: areturn
+      LineNumberTable:
+        line 5: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0      34     0  this   Lcom/example/Rupiksha/Fingpay/dto/OnboardRequestDTO;
+    RuntimeInvisibleAnnotations:
+      0: #80()
+        lombok.Generated
+}
+SourceFile: "OnboardRequestDTO.java"
+BootstrapMethods:
+  0: #125 REF_invokeStatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #131 OnboardRequestDTO(username=\u0001, password=\u0001, ipAddress=\u0001, latitude=\u0001, longitude=\u0001, superMerchantId=\u0001, merchant=\u0001)
+InnerClasses:
+  public static final #138= #134 of #136; // Lookup=class java/lang/invoke/MethodHandles$Lookup of class java/lang/invoke/MethodHandles

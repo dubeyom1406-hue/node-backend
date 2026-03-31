@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+/* 
+Is ek line ka matlab hai:
+"Tailwind CSS ki saari powers is project mein le aao."
+Ab humein alag se koi config file banane ki zaroorat nahi hai (v4 ka naya feature).
+*/
+
+:root {
+  font-family: 'Inter', 'Outfit', 'Montserrat', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  font-weight: 700;
+  color-scheme: light dark;
+  background-color: #ffffff;
+}
+
+/* ── GLOBAL MOBILE FIXES ── */
+html {
+  overflow-x: clip;
+  /* 'hidden' breaks position:sticky — use 'clip' instead */
+  -webkit-text-size-adjust: 100%;
+  /* Prevent font scaling on orientation change in iOS */
+}
+
+:root {
+  --brand-color: #0be9f1;
+  --brand-color-rgb: 11, 233, 241;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-weight: 700;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+  /* Safe area for notched phones */
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ── PREVENT HORIZONTAL OVERFLOW GLOBALLY ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Ensure images and videos are responsive by default */
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ── SCROLLBAR UTILITIES ── */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── MOBILE TOUCH IMPROVEMENTS ── */
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* ── RESPONSIVE TABLE WRAPPER ── */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent flex/grid items from causing overflow */
+.min-w-0 {
+  min-width: 0;
+}
+
+/* ── LANDING PAGE: Hide card deck on mobile ── */
+@media (max-width: 768px) {
+  .rp-services-right {
+    display: none !important;
+  }
+
+  .rp-services-sticky {
+    flex-direction: column !important;
+    gap: 20px !important;
+    padding: 60px 5% 0 !important;
+  }
+  
+  /* Robust horizontal scroll prevention */
+  .rp-root, .dash-root {
+    overflow-x: clip;
+    width: 100%;
+    position: relative;
+  }
+}
+
+/* ── SAFE AREA: Bottom nav clearance ── */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .safe-bottom {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 4rem);
+  }
+}
+
+/* Global utility for hiding things on extremely small screens */
+@media (max-width: 380px) {
+  .hide-xs {
+    display: none !important;
+  }
+}

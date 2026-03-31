@@ -1,0 +1,104 @@
+/* src/components/VerticalCardSlider.css */
+.slider-section-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+}
+
+.section-header-slider {
+    text-align: center;
+    margin-top: 6vh;
+    margin-bottom: 1vh;
+    padding: 0 20px;
+    z-index: 200;
+}
+
+.slider-tag {
+    display: inline-block;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 8px 18px;
+    border-radius: 999px;
+    margin-bottom: 15px;
+    border: 1px solid #dbeafe;
+}
+
+.slider-main-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #0f172a;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+}
+
+.slider-main-desc {
+    color: #475569;
+    max-width: 600px;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin: 0 auto;
+    font-weight: 500;
+}
+
+.slider {
+    position: relative;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    margin-top: 16px;
+}
+
+/* Base item styles */
+.item {
+    position: absolute;
+    top: 0;
+    border-radius: 40px;
+    padding: 50px 45px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow: hidden;
+}
+
+.item-step {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+/* Hover light effect for the 3D icons */
+.hover-light-icon {
+    opacity: 0.15;
+    transform: scale(0.9) translate3d(0, 0, 0);
+}
+
+.item:hover .hover-light-icon {
+    opacity: 1;
+    transform: scale(1.1) translate3d(0, -10px, 0);
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3)) !important;
+}
+
+@media (max-width: 768px) {
+    .slider-main-title {
+        font-size: 2.5rem;
+    }
+
+    .slider-main-desc {
+        font-size: 1.05rem;
+    }
+
+    .item {
+        width: min(340px, 88vw) !important;
+        height: min(420px, 48vh) !important;
+        left: calc(50% - min(170px, 44vw)) !important;
+        padding: 32px 24px;
+    }
+}
