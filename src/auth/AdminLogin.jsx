@@ -306,7 +306,7 @@ const AdminLogin = () => {
     const empTimerFmt = `${String(Math.floor(empTimer / 60)).padStart(2, '0')}:${String(empTimer % 60).padStart(2, '0')}`;
 
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col font-['Montserrat',sans-serif]">
+        <div className="h-screen bg-slate-50 flex flex-col font-['Montserrat',sans-serif] overflow-hidden">
             <header className="bg-white px-6 md:px-12 py-3 flex items-center justify-between shadow-sm border-b border-slate-100 sticky top-0 z-50">
                 <div className="flex items-center gap-4 cursor-pointer" onClick={() => navigate('/login')}>
                     <img src={logo} alt="RUPIKSHA" style={{ height: '40px', width: 'auto' }} className="object-contain" />
@@ -330,13 +330,13 @@ const AdminLogin = () => {
 
             <main className="flex-1 flex flex-col md:flex-row bg-white">
                 {/* Left: Login Form */}
-                <div className="w-full md:w-[45%] lg:w-[42%] p-8 md:p-16 flex flex-col items-center justify-center bg-white border-r border-slate-50 shadow-2xl relative z-10">
-                    <div className="w-full max-w-[420px] space-y-8">
-                        <div className="text-center space-y-2">
+                <div className="w-full md:w-[45%] lg:w-[42%] p-8 md:p-10 flex flex-col items-center justify-center bg-white border-r border-slate-50 shadow-2xl relative z-10 h-full overflow-y-auto">
+                    <div className="w-full max-w-[420px] space-y-6">
+                        <div className="text-center space-y-1">
                             <h2 className="text-[#064e3b] text-3xl md:text-4xl font-black tracking-tighter uppercase italic">
                                 LOGIN
                             </h2>
-                            <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">Access System Headquarters</p>
+                            <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Access System Headquarters</p>
                         </div>
 
                         <div className="bg-white rounded-[2.5rem] shadow-[0_30px_70px_rgba(0,0,0,0.1)] border border-slate-100 overflow-hidden">
@@ -344,9 +344,9 @@ const AdminLogin = () => {
                                 <ShieldCheck size={16} /> Restricted Access — Authorized Personnel
                             </div>
 
-                            <div className="p-8">
+                            <div className="p-6">
                                 {/* Tabs */}
-                                <div className="flex bg-slate-100 rounded-xl p-1 mb-6">
+                                <div className="flex bg-slate-100 rounded-xl p-1 mb-5">
                                     {TABS.map((t, i) => (
                                         <button key={t} onClick={() => { setTab(i); setPwError(''); setOtpError(''); setOtpInfo(''); }}
                                             className={`flex-1 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${tab === i ? 'bg-white text-emerald-700 shadow-sm border border-slate-200' : 'text-slate-500 hover:text-slate-700'}`}>
@@ -552,7 +552,7 @@ const AdminLogin = () => {
                 </div>
 
                 {/* Right: Splash */}
-                <div className="hidden md:flex flex-1 bg-gradient-to-br from-[#064e3b] to-[#115e59] relative overflow-hidden items-center justify-center p-8 lg:p-14">
+                <div className="hidden md:flex flex-1 bg-gradient-to-br from-[#064e3b] to-[#115e59] relative overflow-hidden items-center justify-center p-8 h-full">
                     <div className="absolute inset-0 overflow-hidden pointer-events-none">
                         <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400/10 blur-[150px] rounded-full -mr-48 -mt-48" />
                         <div className="absolute bottom-0 left-0 w-80 h-80 bg-teal-500/10 blur-[120px] rounded-full -ml-40 -mb-40" />
