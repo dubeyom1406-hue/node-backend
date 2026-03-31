@@ -207,25 +207,7 @@ const AllServices = () => {
 
             <div className="all-svcs-root p-4 md:p-8 lg:p-10 max-w-[1600px] mx-auto space-y-12 pb-24 min-h-screen">
 
-                {/* ── Search Bar ── */}
-                <div className="relative w-full max-w-md ml-auto">
-                    <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-                    <input
-                        type="text"
-                        placeholder="Search for a service..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full bg-white border border-slate-200 rounded-[24px] pl-14 pr-6 py-4 text-base font-medium text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all shadow-sm h-[60px]"
-                    />
-                    {searchQuery && (
-                        <button
-                            onClick={() => setSearchQuery('')}
-                            className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-800 text-xs font-bold"
-                        >
-                            CLEAR
-                        </button>
-                    )}
-                </div>
+                <div className="h-4"></div>
 
                 {/* ── Services Grid Sections ── */}
                 <div className="space-y-16">
