@@ -394,7 +394,7 @@ const AdminLogin = () => {
                                                     className="w-full mt-2 bg-gradient-to-r from-slate-800 to-slate-900 hover:from-black hover:to-slate-800 text-white font-black py-4 rounded-xl text-[11px] uppercase tracking-widest shadow-xl shadow-slate-900/20 flex items-center justify-center gap-3 transition-all disabled:opacity-60">
                                                     {pwLoading ? <><Loader2 size={14} className="animate-spin" /> Authenticating...</> : <><ShieldCheck size={15} /> Login as Admin <ArrowRight size={14} /></>}
                                                 </motion.button>
-                                                <p className="text-center text-[9px] font-bold text-slate-400 uppercase tracking-widest pt-1">admin / admin123</p>
+
                                             </form>
                                         </motion.div>
                                     )}
