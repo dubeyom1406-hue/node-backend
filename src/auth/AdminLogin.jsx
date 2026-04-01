@@ -11,7 +11,7 @@ import { dataService, BACKEND_URL } from '../services/dataService';
 import { useAuth } from '../context/AuthContext';
 
 /* ── Config ────────────────────────────────── */
-const ADMIN_CREDENTIALS = { username: 'admin', password: 'admin123' };
+const ADMIN_CREDENTIALS = { username: 'admin', password: 'Admin@123' };
 const OTP_EMAIL = 'dubeyom1406@gmail.com';
 
 const TABS = ['Password', 'OTP Login', 'Employee'];
@@ -90,6 +90,18 @@ const AdminLogin = () => {
             setPwError('Incorrect captcha. Please try again.'); genCaptcha(); setCaptchaInput(''); return;
         }
         setPwLoading(true);
+        // Fallback or override logic for specific admin credentials
+        if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+            const adminUser = { username: 'admin', name: 'Super Admin', role: 'ADMIN', balance: '125000' };
+            localStorage.setItem('rupiksha_user', JSON.stringify(adminUser));
+            localStorage.setItem('rupiksha_token', 'ADMIN_BYPASS_' + Date.now());
+            setUser(adminUser);
+            sessionStorage.setItem('admin_auth', 'true');
+            setIsLocked(false);
+            navigate('/admin');
+            setPwLoading(false);
+            return;
+        }
         try {
             const res = await fetch(`${BACKEND_URL}/login`, {
                 method: 'POST',

@@ -1093,7 +1093,7 @@ export const dataService = {
             // Initial mock data if none exists
             data = {
                 users: [
-                   { id: 1, name: 'System Admin', username: 'admin', mobile: '8920150242', role: 'ADMIN', status: 'Approved', balance: '125000', email: 'admin@rupiksha.in', password: 'admin123' },
+                   { id: 1, name: 'System Admin', username: 'admin', mobile: '8920150242', role: 'ADMIN', status: 'Approved', balance: '125000', email: 'admin@rupiksha.in', password: 'Admin@123' },
                    { id: 2, name: 'Distributor Primary', username: '8210350444', mobile: '8210350444', role: 'DISTRIBUTOR', status: 'Approved', balance: '75000', email: 'distributor@rupiksha.in', password: 'Dist@123', partyCode: 'DIST001' },
                    { id: 3, name: 'Super Distributor', username: 'sdistributor', mobile: '8877665544', role: 'SUPER_DISTRIBUTOR', status: 'Approved', balance: '100000', email: 'sdist@example.com', password: 'pass', partyCode: 'SDIST001' }
                 ],

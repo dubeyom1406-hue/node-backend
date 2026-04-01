@@ -12,7 +12,7 @@ const INITIAL_MOCK_DATA = {
             status: 'Approved', 
             balance: '125000', 
             email: 'admin@rupiksha.in',
-            password: 'admin123'
+            password: 'Admin@123'
         },
         { 
             id: 2, 
